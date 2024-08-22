@@ -31,6 +31,7 @@
                             <option value="admin">Admin</option>
                             <option value="santri">Santri</option>
                             <option value="mitra">Mitra</option>
+                            <option value="pembina">Pembina</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -40,7 +41,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary me-2">Update</button>
-                    <button class="btn btn-danger">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="btn-close">Cancel</button>
                 </form>
             </div>
         </div>

@@ -9,45 +9,70 @@ use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    // data user
+    // data user-----------------------------------------------------------------------------------
     static public function data_user(){
-        $data = User::whereNot('role', 'dev')
-                    ->select(['id','name','username','email','role'])
-                    ->get();
-        if (!$data) {
-            return [];
+        try {
+            $data = User::whereNot('role', 'dev')
+                ->select(['id','name','username','email','role'])
+                ->orderBy("created_at", 'desc')
+                ->get();
+            if (!$data) {
+                return response()->json(['message'=> "Data Tidak Ditemukan"],404);
+            }
+            return $data;
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::info($th);
+            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
-        return $data;
+
     }
 
-    // get user id
+    // get user id-----------------------------------------------------------------------------------
     static public function getById($id){
-        $data = User::where('id',$id)->first(['id','name','username','email','role']);
-        if (!$data) {
-            return response()->json(['message'=> "Data Tidak Ditemukan"],404);
+        try {
+            $data = User::where('id',$id)->first(['id','name','username','email','role']);
+            if (!$data) {
+                return response()->json(['message'=> "Data Tidak Ditemukan"],404);
+            }
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::info($th);
+            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
-        return response()->json($data);
+
     }
-    // update user
+    // update user-----------------------------------------------------------------------------------
     static public function update($r){
-        $data = User::where('id', $r->id)->first();
-        if (!$data) {
-            return response()->json(['message'=> "Data Tidak Ditemukan"],404);
-        }else {
+        try {
+            //code...
+            $data = User::where('id', $r->id)->first();
+            if (!$data) {
+                return response()->json(['message'=> "Data Tidak Ditemukan"],404);
+            }
             $data->update([
                 'name' => $r->name,
                 'username' => $r->username,
                 'email' => $r->email,
                 'role' => $r->role,
+                'password' => $r->password,
             ]);
-            if (!$r->password == null) {
-                $data->update(['password'=> $r->password]);
-            }
             return response()->json(['message'=> 'Berhasil update User '.$data->name.'']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::info($th);
+            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
-    }
 
-    // data session login
+    }
+    // delete user-----------------------------------------------------------------------------------
+    static public function delete($req){
+        $data = User::where('id', $req->uid)->first();
+        $data->delete();
+        return response()->json(['message'=>"Berhasil Hapus User"]);
+    }
+    // data session login-----------------------------------------------------------------------------------
     static public function data_session(){
         return DB::table('sessions')
                 ->join('users', 'sessions.user_id', '=', 'users.id')

@@ -18,8 +18,8 @@ class AuthRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => 'Username is required',
-            'password.required' => 'Password is required',
+            'username.required' => 'Username wajib di isi',
+            'password.required' => 'Password wajib di isi',
         ];
     }
 }
