@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('unauthorized', function(){
     return view('auth.unauthorized');
 })->name('unauthorized');
-
+// route not found
+Route::fallback(function(){
+    return response()->view('auth.404', [], 404);
+});
 
 // route authentikasi
 Route::middleware('guest')->group(function(){
@@ -80,6 +83,7 @@ Route::middleware('role:santri,dev')->group(function(){
         Route::get('/', function(){
             return view('santri.dashboard');
         })->name('santri.dashboard');
+        Route::get('profile', [AuthController::class, 'profile'])->name('profile.santri');
 
     })->middleware('auth');
 
@@ -92,5 +96,6 @@ Route::middleware('role:mitra,dev')->group(function(){
         Route::get('/', function(){
             return view('mitra.dashboard');
         })->name('mitra.dashboard');
+        Route::get('profile', [AuthController::class, 'profile'])->name('profile.mitra');
     })->middleware('auth');
 });

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tema_magang');
             $table->string('tgl_mulai');
             $table->string('tgl_selesai');
-            $table->string('stts_magang');
+            $table->string('stts_seleksi');
             $table->timestamps();
         });
     }

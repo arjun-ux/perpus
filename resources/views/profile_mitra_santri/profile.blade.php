@@ -1,4 +1,4 @@
-@extends('partials._app')
+@extends('partial1._app')
 @section('content')
 <div class="page-content">
 
@@ -112,7 +112,6 @@
                 $('#formEdit').show()
                 $('#about').hide()
             })
-
 
         })
     </script>

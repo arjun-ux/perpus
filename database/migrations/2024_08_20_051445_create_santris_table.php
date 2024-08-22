@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('asrama_id')->nullable();
             $table->unsignedBigInteger('prodi_id')->nullable();
-            $table->unsignedBigInteger('penugasan_id')->nullable();
+            $table->unsignedBigInteger('magang_id')->nullable();
+            $table->unsignedBigInteger('pembina_id')->nullable();
             $table->string('niup')->nullable()->index();
             $table->string('nim')->nullable()->index();
             $table->string('nama_lengkap')->nullable();

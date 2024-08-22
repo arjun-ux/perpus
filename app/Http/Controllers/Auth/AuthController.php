@@ -6,7 +6,7 @@ use App\Service\AuthService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -31,6 +31,10 @@ class AuthController extends Controller
 
     // profile yang terauth
     public function profile(){
-        return view('admin.settings.profile');
+
+        if (Auth::user()->role === 'dev' || Auth::user()->role === 'admin' || Auth::user()->role === 'pembina') {
+            return view('admin.settings.profile');
+        }
+        return view('profile_mitra_santri.profile');
     }
 }
