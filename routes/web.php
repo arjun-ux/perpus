@@ -35,8 +35,11 @@ Route::middleware('role:dev,admin,pembina')->group(function(){
 
 
         // mitra============================================================================================================
+        Route::post('mitra-get', [MitraController::class, 'getMitra'])->name('getMitra');
         Route::get('mitra', [MitraController::class,'index_admin_mitra'])->name('index_admin_mitra');
-        Route::get('mitra-data', [MitraController::class, 'data_mitra'])->name('data_mitra');
+        Route::get('mitra-data', [MitraController::class, 'data_mitra_admin'])->name('data_mitra_admin');
+        Route::post('mitra-store', [MitraController::class, 'store_mitra_admin'])->name('store_mitra_admin');
+        Route::post('mitra-update', [MitraController::class, 'update_mitra'])->name('update_mitra');
 
     })->middleware('auth');
 
@@ -63,6 +66,9 @@ Route::middleware('role:admin,dev')->group(function(){
         Route::post('pembina-store', [PembinaController::class, 'store'])->name('pembina.store');
         Route::post('pembina-update', [PembinaController::class, 'update'])->name('pembina.update');
         Route::post('pembina-delete',[PembinaController::class, 'delete'])->name('pembina.delete');
+
+        //  mitra============================================================================================================
+
 
         // sesion login============================================================================================================
         Route::get('session', [UserController::class, 'sesi'])->name('sesi');

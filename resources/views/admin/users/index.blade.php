@@ -75,7 +75,7 @@
             $('body').on('click', '#edit', function(){
                 var uid = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
-                $('#modalEdit').modal('show');
+
                 $('#uid').text(uid)
                 $('#nama_user').text(name)
 
@@ -103,7 +103,9 @@
                         $('#editnama').val(res.name);
                         $('#editusername').val(res.username);
                         $('#editemail').val(res.email);
-                        $('#editrole').val(res.role);
+
+                        $('#modalEdit').modal('show');
+
                     },
                     error: function(xhr, error){
                         if (xhr.status === 404) {

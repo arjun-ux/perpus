@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Mitra;
 use App\Models\Pembina;
 use App\Models\User;
 use Carbon\Carbon;
@@ -57,7 +58,6 @@ class UserService
                 'name' => $r->name,
                 'username' => $r->username,
                 'email' => $r->email,
-                'role' => $r->role,
             ]);
             if ($r->password) {
                 $data->update(['password'=>$r->password]);
@@ -67,6 +67,14 @@ class UserService
             if($data->role == 'pembina'){
                 $pemb = Pembina::where('user_id', $data->id)->first();
                 $pemb->update(['nama_pembina'=>$data->name]);
+                Log::info('Data Pembina atas nama '.$data->name.' di update');
+            }elseif ($data->role == 'mitra') {
+                $mit = Mitra::where('user_id', $data->id)->first();
+                $mit->update([
+                    'nama_mitra'=>$data->name,
+                    'kontak_mitra' => $data->username,
+                ]);
+                Log::info('Data Mitra atas nama '.$data->name.' di update');
             }
             Log::info('Data Pembina atas nama '.$data->name.' setelah di update dari menu user');
             DB::commit();
@@ -90,6 +98,10 @@ class UserService
                 $pem = Pembina::where('user_id', $data->id)->first();
                 $pem->delete();
                 Log::info('Data Pembina atas nama '.$data->name.' di hapus dari menu user');
+            }elseif ($data->role == 'mitra') {
+                $mit = Mitra::where('user_id', $data->id)->first();
+                $mit->delete();
+                Log::info('Data Mitra atas nama '.$data->name.' di hapus dari menu user');
             }
             $data->delete();
             Log::info('Data user atas nama '.$data->name.' di hapus dari menu user');

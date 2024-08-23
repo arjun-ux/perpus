@@ -35,12 +35,10 @@ class UserController extends Controller
             'name' => 'required',
             'username' => 'required',
             'email' => 'required',
-            'role' => 'required',
         ],[
             "name.required" => 'Nama Wajib diisi',
             "username.required" => 'Usename Wajib diisi',
             "email.required" => 'Email Wajib diisi',
-            "role.required" => 'Role Wajib diisi',
         ]);
         return $this->UserService->update($req);
     }

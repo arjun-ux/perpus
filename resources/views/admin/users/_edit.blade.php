@@ -25,16 +25,6 @@
                          placeholder="Email">
                     </div>
                     <div class="mb-3">
-                        <label for="editrole" class="form-label">Role</label>
-                        <select name="role" id="editrole" class="form-control form-select">
-                            <option value="">Pilih Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="santri">Santri</option>
-                            <option value="mitra">Mitra</option>
-                            <option value="pembina">Pembina</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
                         <label for="editpass" class="form-label">Password</label>
                         <input type="password" class="form-control" id="editpass" name="password"
                         autocomplete="off" placeholder="Password">

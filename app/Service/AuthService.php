@@ -49,12 +49,14 @@ class AuthService
     static public function do_logout(Request $request){
         if (!Auth::user()->role === "dev" || !Auth::user()->role === "admin" || !Auth::user()->role === "pembina" || !Auth::user()->role === "mitra") {
             DB::table('sessions')->where('user_id', Auth::user()->id)->delete();
+            $request->session()->flush();
         }
         Log::info('User atas nama '. Auth::user()->name.' Telah Logout');
 
         Auth::logout(); // logout
+        $request->session()->flush();
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->regenerateToken();
 
         return redirect()->route('login');
     }
