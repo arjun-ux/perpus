@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class PembinaService
 {
-    // id pembina---------------------------------------------------------------------------------------
+    // id pembina============================================================================================================
     static public function get_one($pid){
         try {
             $data = Pembina::with('user')->where('id', $pid)->first();
@@ -20,11 +20,11 @@ class PembinaService
             return response()->json($data);
         } catch (\Throwable $th) {
             //throw $th;
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message'=>"Terjadi Kesalahan"],404);
         }
     }
-    // data pembina---------------------------------------------------------------------------------------
+    // data pembina============================================================================================================
     static public function data_all(){
         try {
             $da = Pembina::query()->with('user');
@@ -34,13 +34,13 @@ class PembinaService
             return $da;
         } catch (\Throwable $th) {
             //throw $th;
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message'=>"Terjadi Kesalahan"],404);
         }
 
     }
 
-    // store pembina bersamaan dengan store user---------------------------------------------------------------------------------------
+    // store pembina bersamaan dengan store user============================================================================================================
     static public function store_pembina_with_user($r){
         try {
             DB::beginTransaction();
@@ -59,34 +59,65 @@ class PembinaService
                 "kontak" => $r->kontak,
             ]);
 
+            Log::info('Pembina Baru atas Nama '.$user->name);
             DB::commit();
             return response()->json(['message'=>"Berhasil Input Data"],201);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message'=>'Terjadi Kesalah'], 404);
         }
 
     }
 
-    // update pembina---------------------------------------------------------------------------------------
+    // update pembina============================================================================================================
     static public function update_pembina($r){
         try {
-            $pem = Pembina::with('user')->where('id', $r->pid)->first();
             DB::beginTransaction();
+
+            $pem = Pembina::where('id', $r->pid)->first();
+
+            Log::info('Pembina Sebelum Di Update  '.$pem->nama_pembina);
             $pem->update([
                 'nama_pembina' => $r->nama_pembina,
                 'kontak' => $r->kontak,
             ]);
+
+            // update nama user juga
+            $user = User::where('id', $pem->user_id)->first();
+            $user->update([
+                'name' => $r->nama_pembina,
+            ]);
+
+            Log::info('User dan Pembina Telah Di Update dengan nama '.$user->name. ' Dari Menu Pembina');
             DB::commit();
-
             return response()->json(['message'=>"Berhasil Update Data"],201);
-
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message'=>'Terjadi Kesalah'], 404);
+        }
+    }
+    // delete pembina============================================================================================================
+    static public function delete_pembina($r){
+        try {
+            DB::beginTransaction();
+
+            $pem = Pembina::where('id', $r->pid)->first();
+            $user = User::where('id', $pem->user_id)->first();
+            if ($user) {
+                $user->delete();
+            }
+            $pem->delete();
+
+            Log::info('Data Pembina dan User '.$pem->nama_pembina.' Telah Dihapus Dari Menu Pembina');
+            DB::commit();
+            return response()->json(['message' => 'Pembina Berhasil Di Hapus']);
+        } catch (\Throwable $th) {
+            Log::alert($th);
+            DB::rollBack();
+            return response()->json(['message' => 'Terjadi Kesalahan...'], 404);
         }
     }
 

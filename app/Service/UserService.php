@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Pembina;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    // data user-----------------------------------------------------------------------------------
+    // data user============================================================================================================
     static public function data_user(){
         try {
             $data = User::whereNot('role', 'dev')
@@ -22,13 +23,13 @@ class UserService
             return $data;
         } catch (\Throwable $th) {
             //throw $th;
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
 
     }
 
-    // get user id-----------------------------------------------------------------------------------
+    // get user id============================================================================================================
     static public function getById($id){
         try {
             $data = User::where('id',$id)->first(['id','name','username','email','role']);
@@ -38,16 +39,17 @@ class UserService
             return response()->json($data);
         } catch (\Throwable $th) {
             //throw $th;
-            Log::info($th);
+            Log::alert($th);
             return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
 
     }
-    // update user-----------------------------------------------------------------------------------
+    // update user============================================================================================================
     static public function update($r){
         try {
-            //code...
+            DB::beginTransaction();
             $data = User::where('id', $r->id)->first();
+            Log::info('Data user atas nama '.$data->name.' sebelum di update');
             if (!$data) {
                 return response()->json(['message'=> "Data Tidak Ditemukan"],404);
             }
@@ -56,23 +58,51 @@ class UserService
                 'username' => $r->username,
                 'email' => $r->email,
                 'role' => $r->role,
-                'password' => $r->password,
             ]);
+            if ($r->password) {
+                $data->update(['password'=>$r->password]);
+            }
+            Log::info('Data user atas nama '.$data->name.' setelah di update');
+            // jika role nya pembina
+            if($data->role == 'pembina'){
+                $pemb = Pembina::where('user_id', $data->id)->first();
+                $pemb->update(['nama_pembina'=>$data->name]);
+            }
+            Log::info('Data Pembina atas nama '.$data->name.' setelah di update dari menu user');
+            DB::commit();
             return response()->json(['message'=> 'Berhasil update User '.$data->name.'']);
         } catch (\Throwable $th) {
             //throw $th;
-            Log::info($th);
+            DB::rollBack();
+            Log::alert($th);
             return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
         }
 
     }
-    // delete user-----------------------------------------------------------------------------------
+    // delete user============================================================================================================
     static public function delete($req){
-        $data = User::where('id', $req->uid)->first();
-        $data->delete();
-        return response()->json(['message'=>"Berhasil Hapus User"]);
+        try {
+            DB::beginTransaction();
+            $data = User::where('id', $req->uid)->first();
+
+            // jika rolenya pembina
+            if ($data->role == 'pembina') {
+                $pem = Pembina::where('user_id', $data->id)->first();
+                $pem->delete();
+                Log::info('Data Pembina atas nama '.$data->name.' di hapus dari menu user');
+            }
+            $data->delete();
+            Log::info('Data user atas nama '.$data->name.' di hapus dari menu user');
+            DB::commit();
+            return response()->json(['message'=>"Berhasil Hapus User"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            Log::alert("tejadi Kesalahan", $th);
+        }
+
     }
-    // data session login-----------------------------------------------------------------------------------
+    // data session login============================================================================================================
     static public function data_session(){
         return DB::table('sessions')
                 ->join('users', 'sessions.user_id', '=', 'users.id')

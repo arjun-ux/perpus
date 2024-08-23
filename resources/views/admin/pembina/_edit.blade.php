@@ -17,16 +17,6 @@
                             autocomplete="off" placeholder="Nama" >
                         </div>
                         <div class="mb-3">
-                            <label for="edit_username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="edit_username" name="username"
-                            autocomplete="off" placeholder="Username" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="edit_email" name="email"
-                            placeholder="Email">
-                        </div>
-                        <div class="mb-3">
                             <label for="edit_kontak" class="form-label">Kontak</label>
                             <input type="text" class="form-control" id="edit_kontak" name="kontak"
                             autocomplete="off" placeholder="Kontak / No Tlpn">

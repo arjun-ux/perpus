@@ -48,10 +48,4 @@ class User extends Authenticatable
         ];
     }
 
-
-    //  relasi pembina
-    public function pembina(): HasMany
-    {
-        return $this->hasMany(Pembina::class);
-    }
 }

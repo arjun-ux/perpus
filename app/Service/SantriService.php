@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class SantriService
 {
+    // data santri============================================================================================================
     static public function data_santri(){
         try {
 

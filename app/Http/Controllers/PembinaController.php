@@ -14,38 +14,34 @@ class PembinaController extends Controller
     {
         $this->Pembina = $Pembina;
     }
-    // get id pembina---------------------------------------------------------------------------------------
+    // get id pembina============================================================================================================
     public function getId(Request $req){
         return $this->Pembina->get_one($req->pid);
     }
-    // index pembina---------------------------------------------------------------------------------------
+    // index pembina============================================================================================================
     public function index(){
         return view('admin.pembina.index');
     }
-    // data-pembina---------------------------------------------------------------------------------------
+    // data-pembina============================================================================================================
     public function data_pembina(){
         $res = $this->Pembina->data_all();
-        // return response()->json($res);
         return DataTables::eloquent($res)
-                ->addColumn('username', function($row){
-                    return $row->user->username;
-                })
                 ->addIndexColumn()
                 ->toJson();
     }
-    // store pembina---------------------------------------------------------------------------------------
+    // store pembina============================================================================================================
     public function store(PembinaRequest $r){
         $r->validated();
         return $this->Pembina->store_pembina_with_user($r);
     }
-    // update pembina---------------------------------------------------------------------------------------
+    // update pembina============================================================================================================
     public function update(Request $r){
         // $r->validate();
         return $this->Pembina->update_pembina($r);
     }
-    // delete pembina---------------------------------------------------------------------------------------
-    public function delete(){
-        //
+    // delete pembina============================================================================================================
+    public function delete(Request $r){
+        return $this->Pembina->delete_pembina($r);
     }
 
 }

@@ -13,11 +13,11 @@ class SantriController extends Controller
     {
         $this->SantriService = $SantriService;
     }
-    // index page admin
+    // index page admin============================================================================================================
     public function index_admin(){
         return view('admin.santri.index');
     }
-    // data index page admin
+    // data index page admin============================================================================================================
     public function data_santri(){
         $results = $this->SantriService->data_santri();
         return DataTables::eloquent($results)

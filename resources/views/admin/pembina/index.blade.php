@@ -20,7 +20,6 @@
                                 <tr>
                                     <th>NO</th>
                                     <th>NAMA</th>
-                                    <th>USERNAME</th>
                                     <th>KONTAK</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -39,6 +38,16 @@
 @push('script')
     <script>
         $(document).ready(function(){
+            {{--  $.ajax({
+                url: "{{ route('pembina.data') }}",
+                type: 'get',
+                success: function(res){
+                    console.log(res)
+                },
+                error: function(xhr){
+                    console.log(xhr)
+                }
+            })  --}}
             $('#tbl_pembina').DataTable({
                 processing: false,
                 serverSide: true,
@@ -48,7 +57,6 @@
                 columns: [
                     {data: 'DT_RowIndex', orderable: false, searchable: false,},
                     {data: 'nama_pembina'},
-                    {data: 'username'},
                     {data: 'kontak'},
 
                     { data: 'action', name: 'action', orderable: false, searchable: false,
@@ -130,13 +138,9 @@
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
-                        console.log(res.nama_pembina)
-
                         $('#pid').val(res.id);
                         $('#uid').val(res.user.id);
                         $('#edit_nama').val(res.nama_pembina);
-                        $('#edit_username').val(res.user.username);
-                        $('#edit_email').val(res.user.email);
                         $('#edit_kontak').val(res.kontak);
                     },
                     error: function(xhr, error){
@@ -201,8 +205,8 @@
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
                 Swal.fire({
-                    title: 'Akan Menghapus User?',
-                    text: "User "+name+" Akan Terhapus !",
+                    title: 'Akan Menghapus Pembina?',
+                    text: "Pembina "+name+" Akan Terhapus !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -211,13 +215,14 @@
                 }).then((value)=>{
                     if(value.isConfirmed){
                         $.ajax({
-                            url: "{{ route('delete_user') }}",
+                            url: "{{ route('pembina.delete') }}",
                             type: 'POST',
                             data: {
-                                uid: id,
+                                pid: id,
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){
+                                console.log(res);
                                 Swal.fire({
                                     title: res.message,
                                     icon: 'success',
