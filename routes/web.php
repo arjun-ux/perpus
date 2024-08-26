@@ -79,7 +79,12 @@ Route::middleware('role:admin,dev')->group(function(){
         Route::post('asrama-delete', [AsramaController::class, 'delete_asrama'])->name('asrama.delete');
 
         // sesion login============================================================================================================
+        Route::post('magang-get', [MagangController::class, 'getId'])->name('magang.id');
         Route::get('magang', [MagangController::class, 'index'])->name('magang.index');
+        Route::get('magang-data', [MagangController::class, 'data'])->name('magang.data');
+        Route::post('magang-store', [MagangController::class, 'magang_store'])->name('magang.store');
+        Route::post('magang-update', [MagangController::class, 'magang_update'])->name('magang.update');
+        Route::post('magang-delete', [MagangController::class, 'magang_delete'])->name('magang.delete');
 
         // sesion login============================================================================================================
         Route::get('session', [UserController::class, 'sesi'])->name('sesi');
