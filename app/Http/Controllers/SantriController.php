@@ -19,7 +19,7 @@ class SantriController extends Controller
     }
     // data index page admin============================================================================================================
     public function data_santri(){
-        $results = $this->SantriService->data_santri();
+        $results = $this->SantriService->data();
         return DataTables::eloquent($results)
                 ->addIndexColumn()
                 ->toJson();

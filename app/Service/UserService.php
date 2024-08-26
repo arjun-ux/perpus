@@ -23,9 +23,8 @@ class UserService
             }
             return $data;
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::alert($th);
-            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
@@ -39,9 +38,8 @@ class UserService
             }
             return response()->json($data);
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::alert($th);
-            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
@@ -82,8 +80,8 @@ class UserService
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            Log::alert($th);
-            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
@@ -108,14 +106,15 @@ class UserService
             DB::commit();
             return response()->json(['message'=>"Berhasil Hapus User"]);
         } catch (\Throwable $th) {
-            //throw $th;
             DB::rollBack();
-            Log::alert("tejadi Kesalahan", $th);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
     // data session login============================================================================================================
     static public function data_session(){
+
         return DB::table('sessions')
                 ->join('users', 'sessions.user_id', '=', 'users.id')
                 ->where('users.role', '<>', 'dev')

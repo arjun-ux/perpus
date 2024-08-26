@@ -3,28 +3,23 @@
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Data Mitra</h4>
+                <h4 class="mb-3 mb-md-0">Data Asrama</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
-                <button type="button" id="tambahMitra" class="btn btn-outline-primary btn-sm btn-icon-text me-2 mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="user-plus"></i> Mitra
+                <button type="button" id="tambahAsrama" class="btn btn-outline-primary btn-sm btn-icon-text me-2 mb-2 mb-md-0">
+                    <i class="btn-icon-prepend" data-feather="user-plus"></i> Asrama
                 </button>
-                <a href="{{ route('download_mitra') }}"  class="btn btn-outline-warning btn-sm btn-icon-text me-2 mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="download-cloud"></i> Export Excel
-                </a>
             </div>
         </div>
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover" id="tbl_mitra" style="width: 100%;">
+                        <table class="table table-hover" id="tbl_asrama" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
                                     <th>NAMA</th>
-                                    <th>ALAMAT</th>
-                                    <th>KONTAK</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -35,29 +30,27 @@
                 </div>
             </div>
         </div>
-        @includeIf('admin.mitra._add')
-        @includeIf('admin.mitra._edit')
+        @includeIf('admin.asrama._add')
+        @includeIf('admin.asrama._edit')
     </div>
 @endsection
 @push('script')
     <script>
         $(document).ready(function(){
-            $('#tbl_mitra').DataTable({
+            $('#tbl_asrama').DataTable({
                 processing: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('data_mitra_admin') }}",
+                    url: "{{ route('asrama.data') }}",
                     type: "GET",
                 },
                 columns: [
                     {data: 'DT_RowIndex',orderable: false, searchable: false},
-                    {data: 'nama_mitra'},
-                    {data: 'alamat_mitra'},
-                    {data: 'kontak_mitra'},
+                    {data: 'nama_asrama'},
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const mid = row.id;
-                            const nama = row.nama_mitra;
+                            const nama = row.nama_asrama;
                             return `
                                 <button type="button" id="edit"
                                     data-id="${mid}" data-name="${nama}"
@@ -78,13 +71,13 @@
                 }
             });
 
-            $('#tambahMitra').click(function(){
+            $('#tambahAsrama').click(function(){
                 $('#modalAdd').modal('show');
             })
             $('#formAdd').submit(function(e){
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('store_mitra_admin') }}",
+                    url: "{{ route('asrama.store') }}",
                     type: "POST",
                     data: $('#formAdd').serialize(),
                     success: function(res){
@@ -98,7 +91,7 @@
                             showConfirmButton: false,
                             timerProgressBar: true,
                         }).then(()=>{
-                            $('#tbl_mitra').DataTable().ajax.reload();
+                            $('#tbl_asrama').DataTable().ajax.reload();
                         });
                     },
                     error: function(xhr, error){
@@ -113,7 +106,7 @@
                                     });
                                 });
                             } else {
-                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                toastr.error('Maaf Terjadi kesalahan Internal...');
                             }
                         }
                     }
@@ -125,20 +118,15 @@
                 var title = $(this).attr('data-name');
                 $('#nama_title').text(title);
                 $.ajax({
-                    url: "{{ route('getMitra') }}",
+                    url: "{{ route('asrama.id') }}",
                     type: "post",
                     data: {
-                        mid:id,
+                        aid:id,
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
-                        console.log(res)
-                        $('#mid').val(res.id);
-                        $('#edit_nama').val(res.nama_mitra);
-                        $('#edit_alamat').val(res.alamat_mitra);
-                        $('#edit_kontak').val(res.kontak_mitra);
-                        $('#edit_kontak').val(res.kontak_mitra);
-                        $('#edit_email').val(res.user.email);
+                        $('#aid').val(res.id);
+                        $('#edit_nama').val(res.nama_asrama);
                         $('#modalEdit').modal('show');
                     },
                     error: function(xhr, error){
@@ -153,7 +141,7 @@
                                     });
                                 });
                             } else {
-                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                toastr.error('Maaf Terjadi kesalahan Internal...');
                             }
                         }
                     }
@@ -162,7 +150,7 @@
             $('#formUpdate').submit(function(e){
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('update_mitra') }}",
+                    url: "{{ route('update.asrama') }}",
                     type: "post",
                     data: $(this).serialize(),
                     success: function(res){
@@ -176,7 +164,7 @@
                             showConfirmButton: false,
                             timerProgressBar: true,
                         }).then(()=>{
-                            $('#tbl_mitra').DataTable().ajax.reload();
+                            $('#tbl_asrama').DataTable().ajax.reload();
                         });
                     },
                     error: function(xhr, error){
@@ -191,7 +179,7 @@
                                     });
                                 });
                             } else {
-                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                toastr.error('Maaf Terjadi kesalahan Internal...');
                             }
                         }
                     }
@@ -202,8 +190,8 @@
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
                 Swal.fire({
-                    title: 'Akan Menghapus Mitra?',
-                    text: "Mitra "+name+" Akan Terhapus !",
+                    title: 'Akan Menghapus asrama?',
+                    text: "Asrama "+name+" Akan Terhapus !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -212,10 +200,10 @@
                 }).then((value)=>{
                     if(value.isConfirmed){
                         $.ajax({
-                            url: "{{ route('delete_mitra') }}",
+                            url: "{{ route('asrama.delete') }}",
                             type: 'POST',
                             data: {
-                                mid: id,
+                                aid: id,
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){
@@ -229,7 +217,7 @@
                                     showConfirmButton: false,
                                     timerProgressBar: true,
                                 }).then(()=>{
-                                    $('#tbl_mitra').DataTable().ajax.reload();
+                                    $('#tbl_asrama').DataTable().ajax.reload();
                                 });
                             },
                             error: function(xhr, error){
@@ -244,7 +232,7 @@
                                             });
                                         });
                                     } else {
-                                        toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                        toastr.error('Maaf Terjadi kesalahan Internal...');
                                     }
                                 }
                             }

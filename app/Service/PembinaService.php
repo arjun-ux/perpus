@@ -19,9 +19,8 @@ class PembinaService
             }
             return response()->json($data);
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::alert($th);
-            return response()->json(['message'=>"Terjadi Kesalahan"],404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
     // data pembina============================================================================================================
@@ -33,9 +32,8 @@ class PembinaService
             }
             return $da;
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::alert($th);
-            return response()->json(['message'=>"Terjadi Kesalahan"],404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
@@ -64,8 +62,8 @@ class PembinaService
             return response()->json(['message'=>"Berhasil Input Data"],201);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::alert($th);
-            return response()->json(['message'=>'Terjadi Kesalah'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
 
     }
@@ -95,8 +93,8 @@ class PembinaService
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            Log::alert($th);
-            return response()->json(['message'=>'Terjadi Kesalah'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
     // delete pembina============================================================================================================
@@ -116,8 +114,8 @@ class PembinaService
             return response()->json(['message' => 'Pembina Berhasil Di Hapus']);
         } catch (\Throwable $th) {
             Log::alert($th);
-            DB::rollBack();
-            return response()->json(['message' => 'Terjadi Kesalahan...'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
 

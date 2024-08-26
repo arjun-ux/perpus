@@ -32,13 +32,25 @@
                 </a>
             </li>
             @if (Auth::user()->role == 'admin' ||  Auth::user()->role == 'dev')
+                <li class="nav-item nav-category">Settings</li>
+                <li class="nav-item">
+                    <a href="{{ route('magang.index') }}" class="nav-link">
+                        <i class="link-icon" data-feather="compass"></i>
+                        <span class="link-title">Magang</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('pembina.index') }}" class="nav-link">
                         <i class="link-icon" data-feather="user"></i>
                         <span class="link-title">Pembina</span>
                     </a>
                 </li>
-                <li class="nav-item nav-category">Settings</li>
+                <li class="nav-item">
+                    <a href="{{ route('asrama.index') }}" class="nav-link">
+                        <i class="link-icon" data-feather="home"></i>
+                        <span class="link-title">Asrama</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link">
                         <i class="link-icon" data-feather="users"></i>

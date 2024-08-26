@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MitraExport;
 use App\Http\Requests\MitraRequest;
 use App\Service\MitraService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class MitraController extends Controller
@@ -43,5 +45,14 @@ class MitraController extends Controller
             //
         ]);
         return $this->MitraService->update($r);
+    }
+    // delete mitra===============================================================================================
+    public function delete_mitra(Request $r){
+        return $this->MitraService->delete($r);
+    }
+
+    // donwload mitra===============================================================================================
+    public function download_mitra(){
+        return Excel::download(new MitraExport, 'mitra.xlsx');
     }
 }

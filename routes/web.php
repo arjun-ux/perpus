@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AsramaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MagangController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\PembinaController;
 use App\Http\Controllers\SantriController;
@@ -40,7 +42,8 @@ Route::middleware('role:dev,admin,pembina')->group(function(){
         Route::get('mitra-data', [MitraController::class, 'data_mitra_admin'])->name('data_mitra_admin');
         Route::post('mitra-store', [MitraController::class, 'store_mitra_admin'])->name('store_mitra_admin');
         Route::post('mitra-update', [MitraController::class, 'update_mitra'])->name('update_mitra');
-
+        Route::post('mitra-delete', [MitraController::class, 'delete_mitra'])->name('delete_mitra');
+        Route::get('donwload-mitra', [MitraController::class, 'download_mitra'])->name('download_mitra');
     })->middleware('auth');
 
 });
@@ -67,8 +70,16 @@ Route::middleware('role:admin,dev')->group(function(){
         Route::post('pembina-update', [PembinaController::class, 'update'])->name('pembina.update');
         Route::post('pembina-delete',[PembinaController::class, 'delete'])->name('pembina.delete');
 
-        //  mitra============================================================================================================
+        //  asrama============================================================================================================
+        Route::post('asrama-get', [AsramaController::class, 'getId'])->name('asrama.id');
+        Route::get('asrama', [AsramaController::class, 'index'])->name('asrama.index');
+        Route::get('asrama-data', [AsramaController::class, 'dataAsrama'])->name('asrama.data');
+        Route::post('asrama-simpan', [AsramaController::class, 'simpan_asrama'])->name('asrama.store');
+        Route::post('asrama-update', [AsramaController::class, 'update_asrama'])->name('update.asrama');
+        Route::post('asrama-delete', [AsramaController::class, 'delete_asrama'])->name('asrama.delete');
 
+        // sesion login============================================================================================================
+        Route::get('magang', [MagangController::class, 'index'])->name('magang.index');
 
         // sesion login============================================================================================================
         Route::get('session', [UserController::class, 'sesi'])->name('sesi');

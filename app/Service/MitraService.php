@@ -27,15 +27,12 @@ class MitraService
             }
             return $datas;
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::info($th);
-            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui'], 404);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
     // store mitra in admin page=================================================================================================
     static public function store_mitra($r){
-        // echo json_encode($r->all());
-        // exit();
         try {
             DB::beginTransaction();
 
@@ -60,9 +57,9 @@ class MitraService
             return response()->json(['message' => 'Mitra baru berhasil dibuat'], 200);
         } catch (\Throwable $th) {
             //throw $th;
-            Log::alert('Terjadi Kesalahan...' .$th);
             DB::rollBack();
-            return response()->json(['message' => 'Terjadi Kesalahan yang tidak diketahui']);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
     // update mitra in admin page=================================================================================================
@@ -93,8 +90,28 @@ class MitraService
             return response()->json(['message' => 'Mitra berhasil diupdate'], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::alert('Terjadi Kesalahan...' .$th);
-            return $th;
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
+        }
+    }
+    // delete mitra in admin page==============================================================================================
+    static public function delete($r){
+        try {
+            $data = Mitra::with('user:id')
+                        ->where('id', $r->mid)
+                        ->first();
+
+            if (!$data) {
+                return response()->json(['message'=>"Data Tidak Di temukan"],404);
+            }
+            if ($data->user) {
+                $data->user->delete();
+            }
+            $data->delete();
+            return response()->json(['message'=>'Data Berhasil Di Hapus']);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
     }
 }
