@@ -47,8 +47,29 @@
                     {data: 'name'},
                     {data: 'username'},
                     {data: 'email'},
-                    {data: 'role'},
-
+                    {{--  {data: 'role'},  --}}
+                    {
+                        data: 'role',
+                        render: function(data, type, row){
+                            var statusText = data.toUpperCase();
+                            var statusClass = '';
+                            switch(statusText){
+                                case 'ADMIN':
+                                    statusClass = 'badge bg-success';
+                                    break;
+                                case 'PEMBINA':
+                                    statusClass = 'badge bg-warning';
+                                    break;
+                                case 'MITRA':
+                                    statusClass = 'badge bg-info';
+                                    break;
+                                case 'SANTRI':
+                                    statusClass = 'badge bg-primary';
+                                    break;
+                            }
+                            return '<span class="' + statusClass + '">' + statusText + '</span>';
+                        }
+                    },
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const uid = row.id;

@@ -52,7 +52,25 @@
                     {data: 'tema_magang'},
                     {data: 'tgl_mulai'},
                     {data: 'tgl_selesai'},
-                    {data: 'stts_magang'},
+                    {
+                        data: 'stts_magang',
+                        render: function(data, type, row){
+                            var statusText = data;
+                            var statusClass = '';
+                            switch(statusText.toLowerCase()){
+                                case 'ongoing':
+                                    statusClass = 'badge bg-warning';
+                                    break;
+                                case 'mulai':
+                                    statusClass = 'badge bg-success';
+                                    break;
+                                case 'selesai':
+                                    statusClass = 'badge bg-info';
+                                    break;
+                            }
+                            return '<span class="' + statusClass + '">' + statusText + '</span>';
+                        }
+                    },
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const mid = row.id;
@@ -62,6 +80,11 @@
                                     data-id="${mid}" data-name="${tema}"
                                     class="btn btn-outline-warning btn-icon btn-xs">
                                     <i data-feather="edit-2"></i>
+                                </button>
+                                 <button type="button" id="lihat"
+                                    data-id="${mid}" data-name="${tema}"
+                                    class="btn btn-outline-success btn-icon btn-xs">
+                                    <i data-feather="eye" class="icon-sm"></i>
                                 </button>
                                 <button type="button" id="delete"
                                     data-id="${mid}" data-name="${tema}"
@@ -196,6 +219,9 @@
                 });
             })
 
+            $('body').on('click', '#lihat', function(){
+                alert('nanti disini untuk melihat santri yang magang');
+            })
             $('body').on('click', '#delete', function(){
                 var id = $(this).attr('data-id');
                 var tema = $(this).attr('data-name');

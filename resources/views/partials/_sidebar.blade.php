@@ -46,6 +46,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('prodi.index') }}" class="nav-link">
+                        <i class="link-icon" data-feather="book"></i>
+                        <span class="link-title">Porgram Studi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('asrama.index') }}" class="nav-link">
                         <i class="link-icon" data-feather="home"></i>
                         <span class="link-title">Asrama</span>

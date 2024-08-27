@@ -17,12 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('asrama_id')->nullable();
             $table->unsignedBigInteger('prodi_id')->nullable();
             $table->unsignedBigInteger('magang_id')->nullable();
-            $table->unsignedBigInteger('pembina_id')->nullable();
             $table->string('niup')->nullable()->index();
-            $table->string('nim')->nullable()->index();
+            $table->string('nim')->unique()->index();
             $table->string('nama_lengkap')->nullable();
             $table->string('tmp_lahir')->nullable();
             $table->string('tgl_lahir')->nullable();
+            $table->string('jenis_kelamin')->nullable();
             $table->string('skill')->nullable();
             $table->string('no_ortu')->nullable();
             $table->string('id_telegram')->nullable();

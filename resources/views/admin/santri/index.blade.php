@@ -6,9 +6,9 @@
                 <h4 class="mb-3 mb-md-0">Data Santri / Mahasiswa</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
-                <button type="button" class="btn btn-outline-primary btn-sm btn-icon-text me-2 mb-2 mb-md-0">
+                <a href="{{ route('santri.create') }}" class="btn btn-outline-primary btn-sm btn-icon-text me-2 mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="user-plus"></i> Santri
-                </button>
+                </a>
                 <button type="button" class="btn btn-outline-success btn-sm btn-icon-text me-2 mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="upload-cloud"></i> Import Excel
                 </button>
@@ -43,6 +43,9 @@
 @endsection
 @push('script')
     <script>
+        @if (session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
         $(document).ready(function(){
             $('#tbl_santri').DataTable({
                 processing: false,
@@ -63,10 +66,11 @@
                     },
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
-                            const id = row.session_id;
+                            const id = row.id;
+                            const nama = row.nama_lengkap;
                             return `
                                 <button type="button" id="delete"
-                                    data-id="${id}"
+                                    data-id="${id}" data-name="${nama}"
                                     class="btn btn-outline-danger btn-icon btn-xs">
                                     <i data-feather="trash-2" class="icon-sm"></i>
                                 </button>
@@ -78,6 +82,62 @@
                     feather.replace();
                 }
             });
+
+            $('body').on('click', '#delete', function(){
+                const id = $(this).attr('data-id');
+                const nama = $(this).attr('data-name');
+                Swal.fire({
+                    title: 'Akan Menghapus Santri?',
+                    text: "Santri "+nama+" Akan Terhapus !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!'
+                }).then((value)=>{
+                    if(value.isConfirmed){
+                        $.ajax({
+                            url: "{{ route('santri.delete') }}",
+                            type: 'POST',
+                            data: {
+                                sid: id,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(res){
+                                console.log(res);
+                                Swal.fire({
+                                    title: res.message,
+                                    icon: 'success',
+                                    toast: true,
+                                    timer: 1000,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timerProgressBar: true,
+                                }).then(()=>{
+                                    $('#tbl_santri').DataTable().ajax.reload();
+                                });
+                            },
+                            error: function(xhr, error){
+                                if (xhr.status === 404) {
+                                    toastr.error(xhr.responseJSON.message);
+                                } else {
+                                    let errorMessages = xhr.responseJSON.errors;
+                                    if (errorMessages) {
+                                        Object.keys(errorMessages).forEach((key) => {
+                                            errorMessages[key].forEach((errorMessage) => {
+                                                toastr.error(errorMessage);
+                                            });
+                                        });
+                                    } else {
+                                        toastr.error('Maaf Terjadi kesalahan Internal...');
+                                    }
+                                }
+                            }
+                        })
+                    }
+                    return;
+                });
+            })
         })
     </script>
 @endpush

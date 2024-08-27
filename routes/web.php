@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MagangController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\PembinaController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\SantriController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,9 @@ Route::middleware('role:dev,admin,pembina')->group(function(){
         // data santri============================================================================================================
         Route::get('santri', [SantriController::class, 'index_admin'])->name('index_admin');
         Route::get('santri-data', [SantriController::class, 'data_santri'])->name('data_santri');
-
+        Route::get('santri-create', [SantriController::class, 'create'])->name('santri.create');
+        Route::post('santri-store', [SantriController::class, 'santri_store'])->name('santri.store');
+        Route::post('santri-delete', [SantriController::class, 'delete_santri'])->name('santri.delete');
 
         // mitra============================================================================================================
         Route::post('mitra-get', [MitraController::class, 'getMitra'])->name('getMitra');
@@ -69,6 +72,14 @@ Route::middleware('role:admin,dev')->group(function(){
         Route::post('pembina-store', [PembinaController::class, 'store'])->name('pembina.store');
         Route::post('pembina-update', [PembinaController::class, 'update'])->name('pembina.update');
         Route::post('pembina-delete',[PembinaController::class, 'delete'])->name('pembina.delete');
+
+        //  asrama============================================================================================================
+        Route::get('prodi-get', [ProdiController::class, 'getId'])->name('prodi.get');
+        Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
+        Route::get('prodi-data', [ProdiController::class, 'data'])->name('prodi.data');
+        Route::post('prodi-store', [ProdiController::class, 'simpan_prodi'])->name('prodi.store');
+        Route::post('prodi-update', [ProdiController::class, 'update_prodi'])->name('prodi.update');
+        Route::post('prodi-delete', [ProdiController::class, 'delete_prodi'])->name('prodi.delete');
 
         //  asrama============================================================================================================
         Route::post('asrama-get', [AsramaController::class, 'getId'])->name('asrama.id');

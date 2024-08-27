@@ -13,6 +13,7 @@ class MagangController extends Controller
     public function __construct(MagangService $Magang){
         $this->Magang = $Magang;
     }
+
     // index============================================================================================================
     public function getId(Request $r){
         return $this->Magang->getOne($r->mid);

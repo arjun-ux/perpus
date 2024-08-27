@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Asrama;
+use App\Models\Prodi;
 use Illuminate\Support\Facades\Log;
 
 
@@ -51,5 +52,23 @@ class SettingService
             Log::error($th);
             return response()->json([$th->getMessage()],500);
         }
+    }
+
+    // get one prodi=====================================================================================
+    public function getOneProdi($id){
+        $prd = Prodi::where('id', $id)->first();
+        if (!$prd) {
+            return [];
+        }
+        return $prd;
+    }
+    // Prodi=====================================================================================
+    public function data_prodi(){
+        return Prodi::query(['id','nama_prodi'])->orderBy('id','desc');
+    }
+    // simpan prodi=====================================================================================
+    public function store($r){
+        echo json_encode($r);
+        exit();
     }
 }
