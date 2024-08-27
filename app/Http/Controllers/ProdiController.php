@@ -32,15 +32,16 @@ class ProdiController extends Controller
     // store=================================================================================================
     public function simpan_prodi(Request $r){
         $r->validate(['nama_prodi'=> 'required'],['nama_prodi.required' => 'Nama Wajib Di Isi']);
-        $res = $this->Setting->store($r->all());
-        return response()->json($res);
+        $res = $this->Setting->store($r);
+        return $res;
     }
     // update=================================================================================================
     public function update_prodi(Request $r){
-        //
+        $r->validate(['nama_prodi'=> 'required'],['nama_prodi.required' => 'Nama Wajib Di Isi']);
+        return $this->Setting->updateProdi($r);
     }
     // delete=================================================================================================
     public function delete_prodi(Request $r){
-        //
+        return $this->Setting->hapus_prodi($r->pid);
     }
 }

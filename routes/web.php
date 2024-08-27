@@ -74,7 +74,7 @@ Route::middleware('role:admin,dev')->group(function(){
         Route::post('pembina-delete',[PembinaController::class, 'delete'])->name('pembina.delete');
 
         //  asrama============================================================================================================
-        Route::get('prodi-get', [ProdiController::class, 'getId'])->name('prodi.get');
+        Route::post('prodi-get', [ProdiController::class, 'getId'])->name('prodi.get');
         Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
         Route::get('prodi-data', [ProdiController::class, 'data'])->name('prodi.data');
         Route::post('prodi-store', [ProdiController::class, 'simpan_prodi'])->name('prodi.store');

@@ -68,7 +68,34 @@ class SettingService
     }
     // simpan prodi=====================================================================================
     public function store($r){
-        echo json_encode($r);
-        exit();
+        try {
+            Prodi::create(['nama_prodi' => $r->nama_prodi]);
+            return response()->json(['message'=>"Berhasil Simpan Data"]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
+        }
+    }
+    // update prodi=====================================================================================
+    public function updateProdi($r){
+        try {
+            $da = $this->getOneProdi($r->pid);
+            $da->update(['nama_prodi'=>$r->nama_prodi]);
+            return response()->json(['message'=>'Berhasil Update Prodi']);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
+        }
+    }
+    // delete prodi=====================================================================================
+    public function hapus_prodi($id){
+        try {
+            $res = Prodi::where('id', $id)->first();
+            $res->delete();
+            return response()->json(['message'=>'Berhasil Hapus Data'],201);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
+        }
     }
 }
