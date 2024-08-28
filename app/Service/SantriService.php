@@ -100,7 +100,7 @@ class SantriService
             $fs = Excel::toArray(new SantriImport, request()->file('file_santri'), null, \Maatwebsite\Excel\Excel::XLSX);
             $data = $fs[0];
             $santri = [];
-
+            // dd($data);
             foreach ($data as $value) {
                 $santri[] = [
                     'niup' => $value['niup'],
@@ -115,6 +115,7 @@ class SantriService
                     'stts' => 'Aktif',
                 ];
             }
+            // dd($santri);
             try {
                 DB::beginTransaction();
 
@@ -127,6 +128,38 @@ class SantriService
                 Log::error($th);
                 return response()->json([$th->getMessage()],500);
             }
+        }
+    }
+
+    // generate user
+    public function generateUser($r){
+        try {
+            $ids = $r->ids;
+            $ds = Santri::whereIn('id', $ids)->get(); // datasantri berdasarkan id di atas
+
+            DB::beginTransaction();
+            $sudahPunyaUser = [];
+            foreach ($ds as $s) {
+                if ($s->user_id !== null) {
+                    $sudahPunyaUser[] = $s->nama_lengkap .' Sudah Memiliki User';
+                    Log::info($s->nama_lengkap .' Sudah Memiliki User');
+                }else {
+                    $us = User::create([
+                        'name' => $s->nama_lengkap,
+                        'username' => $s->nim,
+                        'password' => $s->nim,
+                        'role' => 'santri',
+                    ]);
+                    $s->update(['user_id'=>$us->id]);
+                }
+            }
+            // dd($sudahPunyaUser);
+            DB::commit();
+            return response()->json(['message'=>'Berhasil Create User Form Santri',]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+                Log::error($th);
+                return response()->json([$th->getMessage()],500);
         }
     }
 }

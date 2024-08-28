@@ -126,7 +126,63 @@
                     $('#generateUser').hide();
                 }
             });
-            
+            $('#generateUser').click(function(){
+                var selectedIds = [];
+                $('#tbl_santri tbody input[type="checkbox"]:checked').each(function(){
+                    selectedIds.push($(this).val());
+                });
+                Swal.fire({
+                    title: 'Akan Menggenerate User?',
+                    text: "Tindakan Ini Akan Membuat User Dari Santri Terpilih!!!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya!'
+                }).then((value)=>{
+                    if(value.isConfirmed){
+                        // ajax post
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('santri.generate.user') }}',
+                            data: {
+                                ids: selectedIds,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: function(res){
+                                Swal.fire({
+                                    title: res.message,
+                                    icon: 'success',
+                                    toast: true,
+                                    timer: 1000,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timerProgressBar: true,
+                                }).then(()=>{
+                                    $('#tbl_santri').DataTable().ajax.reload();
+                                });
+                            },
+                            error: function(xhr, error){
+                                if (xhr.status === 404) {
+                                    toastr.error(xhr.responseJSON.message);
+                                } else {
+                                    let errorMessages = xhr.responseJSON.errors;
+                                    if (errorMessages) {
+                                        Object.keys(errorMessages).forEach((key) => {
+                                            errorMessages[key].forEach((errorMessage) => {
+                                                toastr.error(errorMessage);
+                                            });
+                                        });
+                                    } else {
+                                        toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            });
+
 
             $('#importExcel').click(function(){
                 $('#importMahasiswa').show();

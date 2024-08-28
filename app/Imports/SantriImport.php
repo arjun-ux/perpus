@@ -11,8 +11,8 @@ class SantriImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new Santri([
-            'niup' => $row['NIUP'],
-            'nim' => $row['NIM'],
+            // 'niup' => $row['NIUP'],
+            // 'nim' => $row['NIM'],
         ]);
     }
 }
