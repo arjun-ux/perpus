@@ -4,6 +4,6 @@
 $(function() {
   'use strict';
 
-  $('#myDropify').dropify();
+  $('#importSantri').dropify();
 
 });

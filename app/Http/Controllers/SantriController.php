@@ -41,12 +41,26 @@ class SantriController extends Controller
         return $this->SantriService->store($req);
     }
 
-
-
-
+    // santri update============================================================================================================
+    public function santri_update(Request $req){
+        //
+    }
 
     // santri delete============================================================================================================
     public function delete_santri(Request $r){
         return $this->SantriService->delete($r->sid);
+    }
+
+    // santri import============================================================================================================
+    public function import_santri(Request $r){
+        $r->validate([
+            'file_santri' => 'required|file|mimes:xlsx,xls|max:2048',
+        ],[
+            'file_santri.required' => 'File tidak boleh kosong',
+            'file_santri.file' => 'File harus berupa file excel',
+            'file_santri.mimes' => 'File harus berupa file excel',
+            'file_santri.max' => 'File tidak boleh melebihi 2MB',
+        ]);
+        return $this->SantriService->import($r);
     }
 }

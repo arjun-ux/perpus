@@ -2,10 +2,14 @@
 
 namespace App\Service;
 
+use App\Imports\SantriImport;
+use App\Jobs\ImportSantriExcelJob;
 use App\Models\Santri;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SantriService
 {
@@ -71,6 +75,7 @@ class SantriService
         }
     }
 
+    // update santri============================================================================================================
 
 
 
@@ -86,6 +91,42 @@ class SantriService
         } catch (\Throwable $th) {
             Log::error($th);
             return response()->json([$th->getMessage()],500);
+        }
+    }
+
+    // import santri============================================================================================================
+    public function import($r){
+        if ($r->hasFile('file_santri')) {
+            $fs = Excel::toArray(new SantriImport, request()->file('file_santri'), null, \Maatwebsite\Excel\Excel::XLSX);
+            $data = $fs[0];
+            $santri = [];
+
+            foreach ($data as $value) {
+                $santri[] = [
+                    'niup' => $value['niup'],
+                    'nim' => $value['nim'],
+                    'nama_lengkap' => $value['nama'],
+                    'tmp_lahir' => $value['tempat_lahir'],
+                    'tgl_lahir' => $value['tanggal_lahir'],
+                    'jenis_kelamin' => $value['jenis_kelamin'],
+                    'skill' => $value['skill'],
+                    'no_ortu' => $value['no_ortu'],
+                    'id_telegram' => $value['id_telegram'],
+                    'stts' => 'Aktif',
+                ];
+            }
+            try {
+                DB::beginTransaction();
+
+                DB::table('santris')->insert($santri);
+
+                DB::commit();
+                return response()->json(['message' => 'Data berhasil diimpor!']);
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                Log::error($th);
+                return response()->json([$th->getMessage()],500);
+            }
         }
     }
 }

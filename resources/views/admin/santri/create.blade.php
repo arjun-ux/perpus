@@ -34,8 +34,8 @@
                                     <label class="form-label">JENIS KELAMIN :</label>
                                     <select class="form-select" name="jenis_kelamin">
                                         <option selected disabled>Pilih Jenis Kelamin</option>
-                                        <option value="1">Laki - Laki</option>
-                                        <option value="2">Perempuan</option>
+                                        <option value="L">Laki - Laki</option>
+                                        <option value="P">Perempuan</option>
                                     </select>
                                 </div>
                             </div>
