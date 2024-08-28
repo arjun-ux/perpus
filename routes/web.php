@@ -40,6 +40,7 @@ Route::middleware('role:dev,admin,pembina')->group(function(){
         Route::post('santri-delete', [SantriController::class, 'delete_santri'])->name('santri.delete');
         Route::post('santri-import', [SantriController::class, 'import_santri'])->name('santri.import');
         Route::post('generate-user-santri', [SantriController::class, 'generate_user'])->name('santri.generate.user');
+        Route::post('generate-user-one', [SantriController::class, 'generate_user_one'])->name('santri.generate.user.one');
 
         // mitra============================================================================================================
         Route::post('mitra-get', [MitraController::class, 'getMitra'])->name('getMitra');

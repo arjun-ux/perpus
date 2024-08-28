@@ -158,8 +158,34 @@ class SantriService
             return response()->json(['message'=>'Berhasil Create User Form Santri',]);
         } catch (\Throwable $th) {
             DB::rollBack();
-                Log::error($th);
-                return response()->json([$th->getMessage()],500);
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
         }
+    }
+
+    // generateUserOne=============================================================================
+    public function generateUserOne($r){
+        try {
+            $sa = Santri::where('id', $r->id)->first();
+            DB::beginTransaction();
+            $user = User::create([
+                "name" => $sa->nama_lengkap,
+                "username" => $sa->nim,
+                "password" => $sa->nim,
+                "role" => "santri",
+            ]);
+            $sa->update(['user_id'=>$user->id]);
+            DB::commit();
+            return response()->json(['message'=>'Berhasil Generate User Dari Santri Ini']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th);
+            return response()->json([$th->getMessage()],500);
+        }
+    }
+
+    // export santri=============================================================================
+    public function export($r){
+        //
     }
 }

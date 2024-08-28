@@ -18,9 +18,9 @@
                 <button type="button" id="importExcel" class="btn btn-outline-success btn-sm btn-icon-text me-2 mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="upload-cloud"></i> Import Excel
                 </button>
-                <button type="button" id="exportExcel" class="btn btn-outline-warning btn-sm btn-icon-text me-2 mb-2 mb-md-0">
+                {{--  <button type="button" id="exportExcel" class="btn btn-outline-warning btn-sm btn-icon-text me-2 mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="download-cloud"></i> Export Excel
-                </button>
+                </button>  --}}
             </div>
         </div>
         <div class="col-md-12 grid-margin stretch-card" id="importMahasiswa" style="display: none">
@@ -102,6 +102,21 @@
                         render: function (data, type, row) {
                             const id = row.id;
                             const nama = row.nama_lengkap;
+                            const idUser = row.user_id;
+                            if(idUser == null){
+                                return `
+                                    <button type="button" id="delete"
+                                        data-id="${id}" data-name="${nama}"
+                                        class="btn btn-outline-danger btn-icon btn-xs">
+                                        <i data-feather="trash-2" class="icon-sm"></i>
+                                    </button>
+                                    <button type="button" id="user"
+                                        data-id="${id}" data-name="${nama}"
+                                        class="btn btn-outline-info btn-icon btn-xs">
+                                        <i data-feather="user" class="icon-sm"></i>
+                                    </button>
+                            `;
+                            }
                             return `
                                 <button type="button" id="delete"
                                     data-id="${id}" data-name="${nama}"
@@ -126,6 +141,59 @@
                     $('#generateUser').hide();
                 }
             });
+
+            $('body').on('click', '#user', function(){
+                Swal.fire({
+                    title: 'Akan Menggenerate User?',
+                    text: "Tindakan Ini Akan Membuat User Dari Santri Terpilih!!!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya!'
+                }).then((value)=>{
+                    if(value.isConfirmed){
+                        $.ajax({
+                            url: "{{ route('santri.generate.user.one') }}",
+                            type: "POST",
+                            data: {
+                                id: $(this).attr('data-id'),
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function(res){
+                                Swal.fire({
+                                    title: res.message,
+                                    icon: 'success',
+                                    toast: true,
+                                    timer: 1000,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timerProgressBar: true,
+                                }).then(()=>{
+                                    $('#tbl_santri').DataTable().ajax.reload();
+                                });
+                            },
+                            error: function(xhr, error){
+                                if (xhr.status === 404) {
+                                    toastr.error(xhr.responseJSON.message);
+                                } else {
+                                    let errorMessages = xhr.responseJSON.errors;
+                                    if (errorMessages) {
+                                        Object.keys(errorMessages).forEach((key) => {
+                                            errorMessages[key].forEach((errorMessage) => {
+                                                toastr.error(errorMessage);
+                                            });
+                                        });
+                                    } else {
+                                        toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+            })
+
             $('#generateUser').click(function(){
                 var selectedIds = [];
                 $('#tbl_santri tbody input[type="checkbox"]:checked').each(function(){

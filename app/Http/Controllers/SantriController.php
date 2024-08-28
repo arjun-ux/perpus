@@ -64,9 +64,18 @@ class SantriController extends Controller
         return $this->SantriService->import($r);
     }
 
-    // generate user============================================================================================================
+    // generate user multi============================================================================================================
     public function generate_user(Request $r){
-
         return $this->SantriService->generateUser($r);
     }
+    // generate user one============================================================================================================
+    public function generate_user_one(Request $r){
+        return $this->SantriService->generateUserOne($r);
+    }
+
+    // export santri============================================================================================================
+    public function export_santri(Request $r){
+        return $this->SantriService->export($r);
+    }
+
 }
