@@ -38,25 +38,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="tbl_santri" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="selectTh"></th>
-                                    <th>NO</th>
-                                    <th>NAMA</th>
-                                    <th>NIM</th>
-                                    <th>NIUP</th>
-                                    <th>STATUS</th>
-                                    <th>ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card" id="card_santri">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tbl_santri" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectTh"></th>
+                                        <th>NO</th>
+                                        <th>NAMA</th>
+                                        <th>NIM</th>
+                                        <th>NIUP</th>
+                                        <th>STATUS</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 grid-margin stretch-card" id="lihat-penugasan" style="display: none">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Penugasan <strong id="nama_santri"></strong></h6>
+                        <div id="loopingPenugasan"></div>
+
                     </div>
                 </div>
             </div>
@@ -71,6 +82,13 @@
         @if (session('success'))
             toastr.success('{{ session('success') }}');
         @endif
+        {{--  $.ajax({
+            type: 'GET',
+            url: "{{ route('data_santri') }}",
+            success: function(data){
+                console.log(data)
+            }
+        })  --}}
         $(document).ready(function(){
             $('#tbl_santri').DataTable({
                 processing: false,
@@ -94,9 +112,7 @@
                     {data: 'niup'},
                     {
                         data: 'stts',
-                        render: function (data, type, row) {
-                            return data;
-                        }
+
                     },
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
@@ -118,6 +134,11 @@
                             `;
                             }
                             return `
+                                <button type="button" id="penugasan"
+                                    data-id="${id}" data-name="${nama}"
+                                    class="btn btn-outline-success btn-icon btn-xs">
+                                    <i data-feather="eye" class="icon-sm"></i>
+                                </button>
                                 <button type="button" id="delete"
                                     data-id="${id}" data-name="${nama}"
                                     class="btn btn-outline-danger btn-icon btn-xs">
@@ -131,6 +152,64 @@
                     feather.replace();
                 }
             });
+
+            $('body').on('click', '#penugasan', function(){
+                const nama = $(this).attr('data-name');
+                const id = $(this).attr('data-id');
+                $('#nama_santri').text(nama)
+                $.ajax({
+                    url: "{{ route('santri.penugasan') }}",
+                    type: "post",
+                    data: {
+                        sid: id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res){
+                        $('#card_santri').removeClass('col-md-12').addClass('col-md-8');
+                        $('#lihat-penugasan').show();
+                        if(res.length == 0){
+                            $('#loopingPenugasan').empty();
+                            var kosong = `
+                                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                                    <div class="d-flex align-items-center hover-pointer">
+                                        <div class="ms-2">
+                                            <p>Santri Belum Memiliki Tempat Magang</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                            $('#loopingPenugasan').append(kosong);
+
+                        }else{
+                            if(Array.isArray(res)){
+                                $('#loopingPenugasan').empty();
+                                res.forEach(function(item){
+                                    const lokasi = item.mitra.nama_mitra;
+                                    const status = item.status_penugasan;
+
+                                    var looping = `
+                                    <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                                        <div class="d-flex align-items-center hover-pointer">
+                                            <div class="ms-2">
+                                                <p>${lokasi}</p>
+                                                <p class="tx-11 text-muted">${status}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `
+                                    $('#loopingPenugasan').append(looping);
+                                })
+                            }else{
+                                console.log('Data Bukan array');
+                            }
+                        }
+
+                    },
+                    error: function(xhr){
+                        console.log(xhr);
+                    }
+                });
+            })
 
             $('#selectTh').change(function(){
                 var isChecked = $(this).prop('checked');

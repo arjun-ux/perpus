@@ -29,4 +29,8 @@ class Santri extends Model
     public function magang(){
         return $this->belongsTo(Magang::class, 'magang_id', 'id');
     }
+    // relasi ke penugasan
+    public function penugasan(){
+        return $this->hasMany(Penugasan::class);
+    }
 }

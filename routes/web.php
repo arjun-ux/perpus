@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MagangController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\PembinaController;
+use App\Http\Controllers\PenugasanController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\SantriController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,7 @@ Route::middleware('role:dev,admin,pembina')->group(function(){
         Route::post('santri-import', [SantriController::class, 'import_santri'])->name('santri.import');
         Route::post('generate-user-santri', [SantriController::class, 'generate_user'])->name('santri.generate.user');
         Route::post('generate-user-one', [SantriController::class, 'generate_user_one'])->name('santri.generate.user.one');
+        Route::post('santri-penugasan', [PenugasanController::class, 'penugasan_santri'])->name('santri.penugasan');
 
         // mitra============================================================================================================
         Route::post('mitra-get', [MitraController::class, 'getMitra'])->name('getMitra');
@@ -123,10 +125,11 @@ Route::middleware('role:santri,dev')->group(function(){
     // route santri
     Route::prefix('santri')->group(function(){
         // dashboard santri============================================================================================================
-        Route::get('/', function(){
-            return view('santri.dashboard');
-        })->name('santri.dashboard');
+        Route::get('/', [SantriController::class, 'index_santri'])->name('santri.dashboard');
         Route::get('profile', [AuthController::class, 'profile'])->name('profile.santri');
+
+        // dashboard santri============================================================================================================
+        Route::get('magang', [MagangController::class, 'index_santri'])->name('magang.index.santri');
 
     })->middleware('auth');
 
@@ -142,3 +145,5 @@ Route::middleware('role:mitra,dev')->group(function(){
         Route::get('profile', [AuthController::class, 'profile'])->name('profile.mitra');
     })->middleware('auth');
 });
+
+// route untuk profile seluruh role

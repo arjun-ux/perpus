@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SantriRequest;
 use App\Models\Asrama;
+use App\Models\Santri;
 use App\Service\SantriService;
 use App\Service\SettingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class SantriController extends Controller
@@ -76,6 +78,12 @@ class SantriController extends Controller
     // export santri============================================================================================================
     public function export_santri(Request $r){
         return $this->SantriService->export($r);
+    }
+
+    // halaman santri dashboard
+    public function index_santri(){
+        $data = Santri::where('user_id', Auth::user()->id)->first();
+        return view('santri.dashboard', compact('data'));
     }
 
 }

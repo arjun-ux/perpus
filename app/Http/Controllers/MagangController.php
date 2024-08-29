@@ -43,4 +43,10 @@ class MagangController extends Controller
     public function magang_delete(Request $r){
         return $this->Magang->delete($r->mid);
     }
+
+
+    // halaman magang santri ============================================================================================================
+    public function index_santri(){
+        return view('santri.magang.index');
+    }
 }

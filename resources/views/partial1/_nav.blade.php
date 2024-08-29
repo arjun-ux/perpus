@@ -88,23 +88,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('magang.index.santri') }}">
                             <i class="link-icon" data-feather="box"></i>
-                            <span class="menu-title">Dashboard Santri</span>
+                            <span class="menu-title">Magang</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="link-icon" data-feather="box"></i>
-                            <span class="menu-title">Dashboard Santri</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="link-icon" data-feather="box"></i>
-                            <span class="menu-title">Dashboard Santri</span>
-                        </a>
-                    </li>
+                    @if ($data->magang_id)
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="link-icon" data-feather="box"></i>
+                                <span class="menu-title">Laporan</span>
+                            </a>
+                        </li>
+                    @endif
                 @elseif (Auth::user()->role == 'mitra')
                     <li class="nav-item">
                         <a class="nav-link" href="#">

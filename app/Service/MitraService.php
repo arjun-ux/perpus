@@ -114,4 +114,9 @@ class MitraService
             return response()->json([$th->getMessage()],500);
         }
     }
+
+    // get data profile==============================================================================================
+    public function get_data_profile(){
+        //
+    }
 }

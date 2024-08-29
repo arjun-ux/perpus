@@ -6,6 +6,8 @@ use App\Imports\SantriImport;
 use App\Jobs\ImportSantriExcelJob;
 use App\Models\Santri;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +18,7 @@ class SantriService
     // data santri============================================================================================================
     static public function data(){
         try {
-            $datas = Santri::query(['id','nama_lengkap','nim','niup','stts'])->orderBy('id', 'desc');
+            $datas = Santri::query()->orderBy('id', 'desc');
             if (!$datas) {
                 return response()->json(['message'=> "Data Tidak Ditemukan"],404);
             }
@@ -100,14 +102,15 @@ class SantriService
             $fs = Excel::toArray(new SantriImport, request()->file('file_santri'), null, \Maatwebsite\Excel\Excel::XLSX);
             $data = $fs[0];
             $santri = [];
-            // dd($data);
             foreach ($data as $value) {
+                // dd(Carbon::parse($value['tanggal_lahir']));
+
                 $santri[] = [
                     'niup' => $value['niup'],
                     'nim' => $value['nim'],
                     'nama_lengkap' => $value['nama'],
                     'tmp_lahir' => $value['tempat_lahir'],
-                    'tgl_lahir' => $value['tanggal_lahir'],
+                    'tgl_lahir' => Carbon::parse($value['tanggal_lahir'])->toDateString(),
                     'jenis_kelamin' => $value['jenis_kelamin'],
                     'skill' => $value['skill'],
                     'no_ortu' => $value['no_ortu'],
@@ -187,5 +190,10 @@ class SantriService
     // export santri=============================================================================
     public function export($r){
         //
+    }
+    // get data santri=============================================================================
+    public function get_data_profile(){
+        $data = Santri::where('user_id', Auth::user()->id)->first();
+        return response()->json($data);
     }
 }
