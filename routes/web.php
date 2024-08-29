@@ -147,3 +147,6 @@ Route::middleware('role:mitra,dev')->group(function(){
 });
 
 // route untuk profile seluruh role
+Route::get('testing', function(){
+    return 'Ini testing';
+});
