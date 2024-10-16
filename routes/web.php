@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\AsramaController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MagangController;
-use App\Http\Controllers\MitraController;
-use App\Http\Controllers\PembinaController;
-use App\Http\Controllers\PenugasanController;
-use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\SantriController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,126 +25,51 @@ Route::middleware('guest')->group(function(){
     Route::post('dologin', [AuthController::class,'dologin'])->name('dologin');
 });
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-// route admin dan pembina============================================================================================================
-Route::middleware('role:dev,admin,pembina')->group(function(){
-    Route::prefix('sistem')->group(function(){
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('profile', [AuthController::class, 'profile'])->name('profile');
 
-        // data santri============================================================================================================
-        Route::get('santri', [SantriController::class, 'index_admin'])->name('index_admin');
-        Route::get('santri-data', [SantriController::class, 'data_santri'])->name('data_santri');
-        Route::get('santri-create', [SantriController::class, 'create'])->name('santri.create');
-        Route::post('santri-store', [SantriController::class, 'santri_store'])->name('santri.store');
-        Route::post('santri-delete', [SantriController::class, 'delete_santri'])->name('santri.delete');
-        Route::post('santri-import', [SantriController::class, 'import_santri'])->name('santri.import');
-        Route::post('generate-user-santri', [SantriController::class, 'generate_user'])->name('santri.generate.user');
-        Route::post('generate-user-one', [SantriController::class, 'generate_user_one'])->name('santri.generate.user.one');
-        Route::post('santri-penugasan', [PenugasanController::class, 'penugasan_santri'])->name('santri.penugasan');
+Route::middleware('role:Admin')->group(function(){
+    Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
-        // mitra============================================================================================================
-        Route::post('mitra-get', [MitraController::class, 'getMitra'])->name('getMitra');
-        Route::get('mitra', [MitraController::class,'index_admin_mitra'])->name('index_admin_mitra');
-        Route::get('mitra-data', [MitraController::class, 'data_mitra_admin'])->name('data_mitra_admin');
-        Route::post('mitra-store', [MitraController::class, 'store_mitra_admin'])->name('store_mitra_admin');
-        Route::post('mitra-update', [MitraController::class, 'update_mitra'])->name('update_mitra');
-        Route::post('mitra-delete', [MitraController::class, 'delete_mitra'])->name('delete_mitra');
-        Route::get('donwload-mitra', [MitraController::class, 'download_mitra'])->name('download_mitra');
-    })->middleware('auth');
-
-});
-
-// route hanya admin saja============================================================================================================
-Route::middleware('role:admin,dev')->group(function(){
-    Route::prefix('admin')->group(function(){
-        // setting============================================================================================================
-        Route::get('settings', function(){
-            return view('admin.settings.index');
-        })->name('settings.index');
-        // user============================================================================================================
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::get('users-data', [UserController::class, 'data_user'])->name('data.user');
-        Route::post('user-edit', [UserController::class, 'user_id'])->name('user_id');
-        Route::post('users-update', [UserController::class, 'user_update'])->name('user_update');
-        Route::post('users-delete', [UserController::class, 'delete_user'])->name('delete_user');
-
-        // pembina============================================================================================================
-        Route::post('pembina-get',[PembinaController::class, 'getId'])->name('pembina.getid');
-        Route::get('pembina', [PembinaController::class, 'index'])->name('pembina.index');
-        Route::get('pembina-data', [PembinaController::class, 'data_pembina'])->name('pembina.data');
-        Route::post('pembina-store', [PembinaController::class, 'store'])->name('pembina.store');
-        Route::post('pembina-update', [PembinaController::class, 'update'])->name('pembina.update');
-        Route::post('pembina-delete',[PembinaController::class, 'delete'])->name('pembina.delete');
-
-        //  asrama============================================================================================================
-        Route::post('prodi-get', [ProdiController::class, 'getId'])->name('prodi.get');
-        Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
-        Route::get('prodi-data', [ProdiController::class, 'data'])->name('prodi.data');
-        Route::post('prodi-store', [ProdiController::class, 'simpan_prodi'])->name('prodi.store');
-        Route::post('prodi-update', [ProdiController::class, 'update_prodi'])->name('prodi.update');
-        Route::post('prodi-delete', [ProdiController::class, 'delete_prodi'])->name('prodi.delete');
-
-        //  asrama============================================================================================================
-        Route::post('asrama-get', [AsramaController::class, 'getId'])->name('asrama.id');
-        Route::get('asrama', [AsramaController::class, 'index'])->name('asrama.index');
-        Route::get('asrama-data', [AsramaController::class, 'dataAsrama'])->name('asrama.data');
-        Route::post('asrama-simpan', [AsramaController::class, 'simpan_asrama'])->name('asrama.store');
-        Route::post('asrama-update', [AsramaController::class, 'update_asrama'])->name('update.asrama');
-        Route::post('asrama-delete', [AsramaController::class, 'delete_asrama'])->name('asrama.delete');
-
-        // sesion login============================================================================================================
-        Route::post('magang-get', [MagangController::class, 'getId'])->name('magang.id');
-        Route::get('magang', [MagangController::class, 'index'])->name('magang.index');
-        Route::get('magang-data', [MagangController::class, 'data'])->name('magang.data');
-        Route::post('magang-store', [MagangController::class, 'magang_store'])->name('magang.store');
-        Route::post('magang-update', [MagangController::class, 'magang_update'])->name('magang.update');
-        Route::post('magang-delete', [MagangController::class, 'magang_delete'])->name('magang.delete');
-
-        // sesion login============================================================================================================
-        Route::get('session', [UserController::class, 'sesi'])->name('sesi');
-        Route::get('data-sesi', [UserController::class, 'data_sesi'])->name('data_sesi');
-        Route::post('delete-sesi', [UserController::class, 'delete_sesi'])->name('delete_sesi');
-
-    })->middleware('auth');
-});
-
-// route untuk pembina============================================================================================================
-Route::middleware('role:pembina,dev')->group(function(){
-    Route::prefix('pembina')->group(function(){
-        // dashboard pembina ikut role admin & pembina diatas============================================================================================================
-    })->middleware('auth');
-});
+    // data buku
+    Route::get('books', [BukuController::class, 'index'])->name('book.index');
+    Route::get('books-data', [BukuController::class, 'data'])->name('books.data');
 
 
+    // kategori buku
+    Route::get('category', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('category-data', [CategoryController::class, 'data'])->name('category.data');
+    Route::post('category-store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('category-show', [CategoryController::class, 'show'])->name('category.show');
+    Route::post('category-update', [CategoryController::class, 'update'])->name('category.update');
+    Route::post('category-delete', [CategoryController::class, 'destroy'])->name('category.delete');
+    // publisher
+    Route::get('publisher', [PublisherController::class, 'index'])->name('publisher.index');
+    Route::get('publisher-data', [PublisherController::class, 'data'])->name('publisher.data');
+    Route::post('publisher-store', [PublisherController::class, 'store'])->name('publisher.store');
+    Route::post('publisher-pid', [PublisherController::class, 'show'])->name('publisher.show');
+    Route::post('publisher-update', [PublisherController::class, 'update'])->name('publisher.update');
+    Route::post('publisher-delete', [PublisherController::class, 'destroy'])->name('publisher.delete');
+    // member
+    Route::get('member', [MemberController::class, 'index'])->name('member.index');
+    Route::get('member-data', [MemberController::class, 'data_member'])->name('member.data');
+    Route::post('member-store', [MemberController::class, 'store'])->name('member.store');
+    Route::post('member-show', [MemberController::class, 'show'])->name('member.show');
+    Route::post('member-update', [MemberController::class, 'update'])->name('member.update');
+    Route::post('member-delete', [MemberController::class, 'destroy'])->name('member.delete');
+    // buku
+    Route::get('buku', [BukuController::class, 'index'])->name('buku.index');
 
+    // administrator
+    Route::get('administrator', [UserController::class, 'index'])->name('administrator');
+    Route::get('admin-data', [UserController::class, 'data_user'])->name('data.admin');
+    Route::post('admin-store', [UserController::class, 'store'])->name('user_store');
+    Route::post('admin-id', [UserController::class, 'user_id'])->name('user_id');
+    Route::post('admin-update', [UserController::class, 'user_update'])->name('user_update');
+    Route::post('admin-delete', [UserController::class, 'delete_user'])->name('delete_user');
 
-// route untuk santri============================================================================================================
-Route::middleware('role:santri,dev')->group(function(){
-    // route santri
-    Route::prefix('santri')->group(function(){
-        // dashboard santri============================================================================================================
-        Route::get('/', [SantriController::class, 'index_santri'])->name('santri.dashboard');
-        Route::get('profile', [AuthController::class, 'profile'])->name('profile.santri');
-
-        // dashboard santri============================================================================================================
-        Route::get('magang', [MagangController::class, 'index_santri'])->name('magang.index.santri');
-
-    })->middleware('auth');
-
-});
-
-// route untuk mitra============================================================================================================
-Route::middleware('role:mitra,dev')->group(function(){
-    Route::prefix('mitra')->group(function(){
-        // dashboard mitra============================================================================================================
-        Route::get('/', function(){
-            return view('mitra.dashboard');
-        })->name('mitra.dashboard');
-        Route::get('profile', [AuthController::class, 'profile'])->name('profile.mitra');
-    })->middleware('auth');
-});
-
-// route untuk profile seluruh role
-Route::get('testing', function(){
-    return 'Ini testing';
+    // settings up
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('settings-create', [SettingController::class, 'create'])->name('settings.create');
+    Route::post('settings-store', [SettingController::class, 'store'])->name('settings.store');
+    Route::get('settings-edit', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::post('settings-update', [SettingController::class, 'update'])->name('settings.update');
 });

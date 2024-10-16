@@ -18,6 +18,19 @@ class UserController extends Controller
     public function index(){
         return view('admin.users.index');
     }
+    // store============================================================================================================
+    public function store(Request $req){
+        $req->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required',
+        ],[
+            "name.required" => 'Nama Wajib diisi',
+            "username.required" => 'Usename Wajib diisi',
+            "email.required" => 'Email Wajib diisi',
+        ]);
+        return $this->UserService->store_user($req);
+    }
     // data============================================================================================================
     public function data_user(){
         $res = $this->UserService->data_user();

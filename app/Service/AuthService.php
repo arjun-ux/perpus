@@ -13,32 +13,16 @@ class AuthService
     // dologin============================================================================================================
     static public function do_login($request){
         if (Auth::attempt($request)) {
-            if (Auth::user()->role == 'admin' || Auth::user()->role == 'pembina' || Auth::user()->role == 'dev') {
+            if (Auth::user()->role == 'Admin'|| Auth::user()->role == 'dev') {
                 // dd($request);
                 session()->regenerate();
 
-                Session::put('user_id', Auth::user()->id); // menyimpna session di table session
-                Log::info('User atas nama '. Auth::user()->name.' Telah Login');
+                // Session::put('user_id', Auth::user()->id); // menyimpna session di table session
+                // Log::info('User atas nama '. Auth::user()->name.' Telah Login');
 
                 return redirect()->route('dashboard')->with('success_login', 'Selamat datang kembali');
+            } else {
 
-            }elseif (Auth::user()->role == 'santri') {
-
-                session()->regenerate();
-
-                Session::put('user_id', Auth::user()->id); // menyimpna session di table session
-                Log::info('User santri atas nama '. Auth::user()->name.' Telah Login');
-
-                return redirect()->route('santri.dashboard')->with('success_login', 'Selamat datang kembali');
-
-            }elseif (Auth::user()->role == 'mitra') {
-
-                session()->regenerate();
-
-                Session::put('user_id', Auth::user()->id); // menyimpna session di table session
-                Log::info('User Mitra atas nama '. Auth::user()->name.' Telah Login');
-
-                return redirect()->route('mitra.dashboard')->with('success_login', 'Selamat datang kembali');
             }
         }else {
             Log::alert('Login Gagal dengan Username ' .$request['username']);

@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="author" content="Arjun">
 
-	<title>APS - Patriot Panji Pelopor</title>
+	<title>E-Perpus | Al-Anwari Kertosari</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +70,6 @@
     <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
 	<!-- End plugin js for this page -->
-
 
 	<!-- inject:js -->
 	<script src="{{ asset('assets/vendors/feather-icons/feather.min.js') }}"></script>

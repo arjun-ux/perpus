@@ -4,6 +4,11 @@
 $(function() {
   'use strict';
 
-  $('#importSantri').dropify();
+  $('#logo').dropify();
+//   $('#foto').dropify({
+//     tpl: {
+//         message: '<div class="dropify-message"><span class="file-icon" /><p style="font-size: 15px;">Klik Atau Seret Disini</p></div>',
+//     }
+//   });
 
 });

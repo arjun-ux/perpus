@@ -3,11 +3,11 @@
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Administrator</h4>
+                <h4 class="mb-3 mb-md-0">Data Buku</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
                 <button type="button" id="triggerModalAdd" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="user"></i> Add
+                    <i class="btn-icon-prepend" data-feather="book-open"></i> Add
                 </button>
             </div>
         </div>
@@ -19,9 +19,12 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                    <th>NAMA</th>
-                                    <th>USERNAME</th>
-                                    <th>EMAIL</th>
+                                    <th>JUDUL</th>
+                                    <th>PENULIS</th>
+                                    <th>PENERBIT</th>
+                                    <th>BUKU BAIK</th>
+                                    <th>BUKU RUSAK</th>
+                                    <th>JUMLAH BUKU</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -32,8 +35,8 @@
                 </div>
             </div>
         </div>
-        @includeIf('admin.users._add')
-        @includeIf('admin.users._edit')
+        @includeIf('buku._add')
+        @includeIf('buku._edit')
     </div>
 @endsection
 @push('script')
@@ -87,13 +90,16 @@
                 processing: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('data.admin') }}",
+                    url: "{{ route('books.data') }}",
                 },
                 columns: [
                     {data: 'DT_RowIndex', orderable: false, searchable: false,},
-                    {data: 'name'},
-                    {data: 'username'},
-                    {data: 'email'},
+                    {data: 'title'},
+                    {data: 'author'},
+                    {data: 'penerbit'},
+                    {data: 'stock_baik'},
+                    {data: 'stock_rusak'},
+                    {data: 'stock'},
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const uid = row.id;
@@ -268,14 +274,6 @@
                     }
                     return;
                 });
-            });
-            $('#modalAdd').on('hidden.bs.modal', function () {
-                // Kosongkan semua input dalam form
-                $('#formAdd')[0].reset();
-            });
-            $('#modalEdit').on('hidden.bs.modal', function () {
-                // Kosongkan semua input dalam form
-                $('#formEdit')[0].reset();
             });
         })
     </script>

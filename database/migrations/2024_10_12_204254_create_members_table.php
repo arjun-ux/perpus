@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('lembaga')->nullable();
-            $table->text('address')->nullable();
-            $table->string('image')->nullable();
-            $table->string('borrowing_due')->nullable();
-            $table->decimal('denda')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('class_id');
+            $table->string('username')->index();
+            $table->enum('status',['Active','Non-Active']);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('members');
     }
 };

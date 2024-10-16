@@ -3,7 +3,7 @@
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Administrator</h4>
+                <h4 class="mb-3 mb-md-0">Penerbit</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
                 <button type="button" id="triggerModalAdd" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
@@ -20,8 +20,11 @@
                                 <tr>
                                     <th>NO</th>
                                     <th>NAMA</th>
-                                    <th>USERNAME</th>
+                                    <th>ADDRESS</th>
+                                    <th>PHONE</th>
                                     <th>EMAIL</th>
+                                    <th>WEBSITE</th>
+                                    <th>ESTABLISHED DATE</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -32,8 +35,8 @@
                 </div>
             </div>
         </div>
-        @includeIf('admin.users._add')
-        @includeIf('admin.users._edit')
+        @includeIf('publisher._add')
+        @includeIf('publisher._edit')
     </div>
 @endsection
 @push('script')
@@ -47,7 +50,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('user_store') }}",
+                    url: "{{ route('publisher.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
@@ -87,13 +90,16 @@
                 processing: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('data.admin') }}",
+                    url: "{{ route('publisher.data') }}",
                 },
                 columns: [
                     {data: 'DT_RowIndex', orderable: false, searchable: false,},
                     {data: 'name'},
-                    {data: 'username'},
+                    {data: 'address'},
+                    {data: 'phone'},
                     {data: 'email'},
+                    {data: 'website'},
+                    {data: 'established_year'},
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const uid = row.id;
@@ -118,17 +124,17 @@
                 }
             });
             $('body').on('click', '#edit', function(){
-                var uid = $(this).attr('data-id');
+                var pid = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
 
-                $('#uid').text(uid)
-                $('#nama_user').text(name)
+                $('#pid').text(pid)
+                $('#name_user').text(name)
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('user_id') }}",
+                    url: "{{ route('publisher.show') }}",
                     data: {
-                        id: uid,
+                        id: pid,
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
@@ -146,8 +152,11 @@
 
                         $('#uid').val(res.id);
                         $('#editnama').val(res.name);
-                        $('#editusername').val(res.username);
+                        $('#editaddres').val(res.address);
                         $('#editemail').val(res.email);
+                        $('#editphone').val(res.phone);
+                        $('#editweb').val(res.website);
+                        $('#editestablished_year').val(res.established_year);
 
                         $('#modalEdit').modal('show');
 
@@ -174,7 +183,7 @@
                     var formData = $(this).serialize();
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('user_update') }}",
+                        url: "{{ route('publisher.update') }}",
                         data: formData + '&_token={{ csrf_token() }}',
                         success: function(res){
                             $('#modalEdit').modal('hide');
@@ -219,8 +228,8 @@
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
                 Swal.fire({
-                    title: 'Akan Menghapus User?',
-                    text: "User "+name+" Akan Terhapus !",
+                    title: 'Akan Menghapus Penerbit?',
+                    text: "Penerbit "+name+" Akan Terhapus !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -229,10 +238,10 @@
                 }).then((value)=>{
                     if(value.isConfirmed){
                         $.ajax({
-                            url: "{{ route('delete_user') }}",
+                            url: "{{ route('publisher.delete') }}",
                             type: 'POST',
                             data: {
-                                uid: id,
+                                pid: id,
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){

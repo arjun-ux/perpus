@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <ul class="list-unstyled p-1">
-                        <a href="{{ route('profile') }}" class="text-body ms-0">
+                        <a href="" class="text-body ms-0">
                             <li class="dropdown-item py-2">
                                 <i class="me-2 icon-md" data-feather="user"></i>
                                 <span>Profile</span>

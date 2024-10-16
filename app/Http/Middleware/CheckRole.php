@@ -32,10 +32,10 @@ class CheckRole
                 ->get();
 
 
-        if ($sesi->count() > 1 ) {
-            Auth::logout();
-            return back()->with('gagal_login', 'Anda Sudah Login Di Perangkat Lain');
-        }
+        // if ($sesi->count() > 1 ) {
+        //     Auth::logout();
+        //     return back()->with('gagal_login', 'Anda Sudah Login Di Perangkat Lain');
+        // }
 
         foreach ($role as $roles) {
             if ($user->role === $roles) {

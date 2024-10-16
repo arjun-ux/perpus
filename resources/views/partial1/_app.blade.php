@@ -7,7 +7,7 @@
     <meta name="description" content="Aplikasi Pelaporan Santri - Patriot Santri Pelopor">
 	<meta name="author" content="Arjun">
 
-	<title>APS - Patriot Santri Pelopor</title>
+	<title>E-Perpus | Al-Anwari Kertosari</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

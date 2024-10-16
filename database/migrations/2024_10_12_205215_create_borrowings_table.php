@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('borrowings', function (Blueprint $table) {
             $table->id();
-            $table->string('lembaga')->nullable();
-            $table->text('address')->nullable();
-            $table->string('image')->nullable();
-            $table->string('borrowing_due')->nullable();
-            $table->decimal('denda')->nullable();
+            $table->unsignedInteger('book_id');
+            $table->unsignedInteger('member_id');
+            $table->date('borrow_date');
+            $table->date('due_date');
+            $table->date('returned_date');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('borrowings');
     }
 };

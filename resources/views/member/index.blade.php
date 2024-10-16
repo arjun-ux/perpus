@@ -3,7 +3,7 @@
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Administrator</h4>
+                <h4 class="mb-3 mb-md-0">Data Anggota</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
                 <button type="button" id="triggerModalAdd" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
@@ -19,9 +19,10 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                    <th>NAMA</th>
                                     <th>USERNAME</th>
-                                    <th>EMAIL</th>
+                                    <th>NAMA</th>
+                                    <th>KELAS</th>
+                                    <th>STATUS MEMBERSHIP</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -32,8 +33,8 @@
                 </div>
             </div>
         </div>
-        @includeIf('admin.users._add')
-        @includeIf('admin.users._edit')
+        @includeIf('member._add')
+        @includeIf('member._edit')
     </div>
 @endsection
 @push('script')
@@ -47,7 +48,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('user_store') }}",
+                    url: "{{ route('member.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
@@ -87,16 +88,17 @@
                 processing: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('data.admin') }}",
+                    url: "{{ route('member.data') }}",
                 },
                 columns: [
                     {data: 'DT_RowIndex', orderable: false, searchable: false,},
-                    {data: 'name'},
                     {data: 'username'},
-                    {data: 'email'},
+                    {data: 'name'},
+                    {data: 'kelas'},
+                    {data: 'status'},
                     { data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
-                            const uid = row.id;
+                            const uid = row.username;
                             const name = row.name;
                             return `
                                 <button type="button" id="edit"
@@ -121,12 +123,13 @@
                 var uid = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
 
+
                 $('#uid').text(uid)
-                $('#nama_user').text(name)
+                $('#member_name').text(name)
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('user_id') }}",
+                    url: "{{ route('member.show') }}",
                     data: {
                         id: uid,
                         _token: "{{ csrf_token() }}",
@@ -143,11 +146,11 @@
                                 timerProgressBar: true,
                             });
                         }
-
                         $('#uid').val(res.id);
-                        $('#editnama').val(res.name);
                         $('#editusername').val(res.username);
-                        $('#editemail').val(res.email);
+                        $('#editnama').val(res.user.name);
+                        $('#editclass').val(res.kelas.id)
+                        $('#editstts').val(res.status)
 
                         $('#modalEdit').modal('show');
 
@@ -174,7 +177,7 @@
                     var formData = $(this).serialize();
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('user_update') }}",
+                        url: "{{ route('member.update') }}",
                         data: formData + '&_token={{ csrf_token() }}',
                         success: function(res){
                             $('#modalEdit').modal('hide');
@@ -219,8 +222,8 @@
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
                 Swal.fire({
-                    title: 'Akan Menghapus User?',
-                    text: "User "+name+" Akan Terhapus !",
+                    title: 'Akan Menghapus Anggota?',
+                    text: "Anggota "+name+" Akan Terhapus !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -229,7 +232,7 @@
                 }).then((value)=>{
                     if(value.isConfirmed){
                         $.ajax({
-                            url: "{{ route('delete_user') }}",
+                            url: "{{ route('member.delete') }}",
                             type: 'POST',
                             data: {
                                 uid: id,

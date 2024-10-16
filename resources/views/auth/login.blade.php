@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Arjun">
 
-	<title>APS - Patriot Panji Pelopor</title>
+	<title>E-Perpus | Al-Anwari Kertosari</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,10 +38,13 @@
     .auth-page .auth-side-wrapper {
         width: 100%;
         height: 100%;
-        background-image: url("{{ asset('assets/images/logo.png') }}");
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+    }
+
+    .logo-lembaga{
+        background-image: url("{{ isset($haveSet) && $haveSet->image ? asset('storage/logo/' . basename($haveSet->image)) : asset('assets/images/logo.png') }}");
     }
 </style>
 <body>
@@ -54,12 +57,16 @@
 						<div class="card">
 							<div class="row">
                                 <div class="col-md-4 pe-md-0 px-3">
-                                    <div class="auth-side-wrapper">
+                                    <div class="auth-side-wrapper logo-lembaga">
                                     </div>
                                 </div>
                                 <div class="col-md-8 ps-md-0">
                                     <div class="auth-form-wrapper px-4 py-5">
-                                        <a href="#" class="noble-ui-logo d-block mb-2">APS<span>Patriot Panji Pelopor</span></a>
+                                        @if ($sudahSet == true)
+                                            <a href="#" class="noble-ui-logo d-block mb-2">E - Perpus<span> {{ $haveSet->lembaga }}</span></a>
+                                        @else
+                                            <a href="#" class="noble-ui-logo d-block mb-2">E - Perpus<span></span></a>
+                                        @endif
                                         <h5 class="text-muted fw-normal mb-4">Selamat Datang Kembali.</h5>
                                         <form action="{{ route('dologin') }}" method="POST">
                                             @csrf
