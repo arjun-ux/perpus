@@ -80,6 +80,12 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('laporan.index') }}" class="nav-link">
+                    <i class="link-icon" data-feather="file-text"></i>
+                    <span class="link-title">Laporan Perpustakaan</span>
+                </a>
+            </li>
 
             <li class="nav-item nav-category">Settings</li>
             <li class="nav-item">

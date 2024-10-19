@@ -6,11 +6,37 @@ use App\Models\Books;
 use App\Models\Borrowing;
 use App\Models\Member;
 use App\Models\Setting;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BorrowService
 {
+    // get borrowing by tgl peminjaman
+    public static function get_by_anggota($req){
+        $data = User::with('member.borrow.book')->where('id', $req)->get();
+        // dd($data);
+        if ($data->isEmpty()) {
+            return null;
+        }
+        return $data;
+    }
+    // get borrowing by tgl peminjaman
+    public static function get_by_tgl_peminjaman($req){
+        $data = Borrowing::with('member.user','book')->where('borrow_date', $req)->get();
+        if ($data->isEmpty()) {
+            return $data;
+        }
+        return null;
+    }
+    // get borrowing by tgl peminjaman
+    public static function get_by_tgl_pengembalian($req){
+        $data = Borrowing::with('member.user','book')->where('returned_date', $req)->get();
+        if ($data->isEmpty()) {
+            return null;
+        }
+        return $data;
+    }
     // get borrowing with memeber
     public static function borrowed($id){
         $data = Borrowing::where('member_id', $id)->latest()->first();

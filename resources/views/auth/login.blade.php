@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Arjun">
 
-	<title>E-Perpus | Al-Anwari Kertosari</title>
+    <title>E-Perpus | {{ isset($haveSet->lembaga) ? $haveSet->lembaga : 'Default Lembaga' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

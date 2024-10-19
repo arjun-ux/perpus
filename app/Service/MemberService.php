@@ -14,7 +14,6 @@ class MemberService
     public static function get_member($req){
         $member = Member::with('user','kelas')->where('username', $req->username)->first();
         if ($member) {
-            # code...
             return $member;
         }
         return null;

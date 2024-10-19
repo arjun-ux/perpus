@@ -32,6 +32,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('role:Admin')->group(function(){
     Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
+    // laporan
+    Route::get('laporan', [DashboardController::class, 'laporan'])->name('laporan.index');
+    Route::post('print-laporan-by-tgl-peminjaman', [DashboardController::class, 'by_tgl_peminjaman'])->name('by_tgl_peminjaman');
+    Route::post('print-laporan-by-tgl-pengembalian', [DashboardController::class, 'by_tgl_pengembalian'])->name('by_tgl_pengembalian');
+    Route::post('print-laporan-by-member', [DashboardController::class, 'by_member'])->name('by_member');
+    Route::get('cari-member', [DashboardController::class, 'cari_member'])->name('cari_member');
     // pengembalian
     Route::get('pengembalian', [ReturnsController::class, 'create'])->name('returns.create');
     Route::post('pengembalian', [ReturnsController::class, 'get_borrow'])->name('returns.borrow');

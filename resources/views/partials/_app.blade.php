@@ -5,8 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="author" content="Arjun">
+    @php
+        $haveSet = App\Models\Setting::first();
+    @endphp
 
-	<title>E-Perpus | Al-Anwari Kertosari</title>
+	<title>E-Perpus | {{ isset($haveSet->lembaga) ? $haveSet->lembaga : 'Default Lembaga' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,10 +57,6 @@
 			<!-- partial -->
             @yield('content')
 
-            @php
-                $haveSet = App\Models\Setting::first();
-            @endphp
-
             <!-- partial:partials/_footer.html -->
             @includeIf('partials._footer', compact('haveSet'))
             <!-- partial -->
@@ -89,6 +88,7 @@
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
     <script src="{{ asset('assets/vendors/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2.js') }}"></script>
+    <script src="{{ asset('assets/js/flatpickr.js') }}"></script>
 	<!-- End custom js for this page -->
     @stack('script')
 
