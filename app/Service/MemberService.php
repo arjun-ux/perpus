@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Log;
 class MemberService
 {
 
+    // get member
+    public static function get_member($req){
+        $member = Member::with('user','kelas')->where('username', $req->username)->first();
+        if ($member) {
+            # code...
+            return $member;
+        }
+        return null;
+    }
+
+    // data
     public static function data(){
         try {
             $data = Member::with('user','kelas')->get('members.*');

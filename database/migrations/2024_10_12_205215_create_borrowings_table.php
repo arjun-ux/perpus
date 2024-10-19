@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('book_id');
             $table->unsignedInteger('member_id');
+            $table->string('condition');
             $table->date('borrow_date');
-            $table->date('due_date');
+            $table->integer('due_date');
             $table->date('returned_date');
+            $table->string('status');
             $table->timestamps();
         });
     }

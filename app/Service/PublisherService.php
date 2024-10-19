@@ -40,8 +40,26 @@ class PublisherService
 
     // update penerbit
     public static function update_publisher($req){
-        echo json_encode($req->all());
-        exit();
+
+        $data = Publisher::where('id', $req->pid)->first();
+        try {
+            DB::beginTransaction();
+            $data->update([
+                'name' => $req->name,
+                'address' => $req->address,
+                'phone' => $req->phone,
+                'email' => $req->email,
+                'website' => $req->website,
+                'established_year' => $req->established_year,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Berhasil Mengupdate Penerbit'],200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json(['message' => 'Terjadi Kesalahan Saat Proses Menghapus'],500);
+        }
+
     }
 
     // delete penerbit

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger("borrow_id");
             $table->date('return_date');
-            $table->enum('condition', ['good','demaged','lost']);
+            $table->string('condition');
+            $table->string('denda');
             $table->timestamps();
         });
     }

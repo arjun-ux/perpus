@@ -68,7 +68,10 @@ class MemberController extends Controller
     {
         try {
             $data = Member::with('user', 'kelas')->where('username', $req->id)->first();
-            return $data;
+            if ($data) {
+                return $data;
+            }
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json(['message' => 'Data tidak ditemukan'], 404);

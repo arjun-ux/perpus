@@ -46,7 +46,7 @@ class PublisherController extends Controller
      */
     public function show(Request $req)
     {
-        return Publisher::where('id', $req->id)->first();
+        return Publisher::where('id', $req->pid)->first();
     }
 
     /**
@@ -54,6 +54,11 @@ class PublisherController extends Controller
      */
     public function update(Request $req)
     {
+        $req->validate([
+            'name' => 'required',
+        ],[
+            'name.required' => 'Nama Penerbit Wajib Diisi',
+        ]);
         return PublisherService::update_publisher($req);
     }
 

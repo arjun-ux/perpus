@@ -13,17 +13,8 @@ class AuthService
     // dologin============================================================================================================
     static public function do_login($request){
         if (Auth::attempt($request)) {
-            if (Auth::user()->role == 'Admin'|| Auth::user()->role == 'dev') {
-                // dd($request);
-                session()->regenerate();
-
-                // Session::put('user_id', Auth::user()->id); // menyimpna session di table session
-                // Log::info('User atas nama '. Auth::user()->name.' Telah Login');
-
-                return redirect()->route('dashboard')->with('success_login', 'Selamat datang kembali');
-            } else {
-
-            }
+            session()->regenerate();
+            return redirect()->route('dashboard')->with('success_login', 'Selamat datang kembali');
         }else {
             Log::alert('Login Gagal dengan Username ' .$request['username']);
             return redirect()->back()->with('gagal_login', 'Username Atau Password Salah!');

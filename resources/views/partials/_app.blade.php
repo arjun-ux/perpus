@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/flatpickr/flatpickr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2/select2.min.css') }}">
     @stack('cssPage')
 	<!-- End plugin css for this page -->
     <!-- stack css -->
@@ -52,9 +53,15 @@
 			@include('partials._navbar')
 			<!-- partial -->
             @yield('content')
-			<!-- partial:partials/_footer.html -->
-			@include('partials._footer')
-			<!-- partial -->
+
+            @php
+                $haveSet = App\Models\Setting::first();
+            @endphp
+
+            <!-- partial:partials/_footer.html -->
+            @includeIf('partials._footer', compact('haveSet'))
+            <!-- partial -->
+
 
 		</div>
 	</div>
@@ -69,6 +76,7 @@
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 	<!-- End plugin js for this page -->
 
 	<!-- inject:js -->
@@ -80,6 +88,7 @@
     <script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
     <script src="{{ asset('assets/vendors/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2.js') }}"></script>
 	<!-- End custom js for this page -->
     @stack('script')
 

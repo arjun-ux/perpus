@@ -62,3 +62,59 @@
     @endif
 </div>
 @endsection
+@push('script')
+<script>
+    $('#trigerReset').click(function(){
+        Swal.fire({
+            title: 'Akan Mereset Apliksi?',
+            text: "Aplikasi Akan Ke Setelan Default !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Reset!'
+        }).then((value)=>{
+            if(value.isConfirmed){
+                $.ajax({
+                    url: "{{ route('settings.reset') }}",
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(res){
+                        Swal.fire({
+                            title: res.message,
+                            icon: 'success',
+                            toast: true,
+                            timer: 1000,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                        }).then(()=>{
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr, error){
+                        if (xhr.status === 404) {
+                            toastr.error(xhr.responseJSON.message);
+                        } else {
+                            let errorMessages = xhr.responseJSON.errors;
+                            if (errorMessages) {
+                                Object.keys(errorMessages).forEach((key) => {
+                                    errorMessages[key].forEach((errorMessage) => {
+                                        toastr.error(errorMessage);
+                                    });
+                                });
+                            } else {
+                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
+                            }
+                        }
+                    }
+                })
+            }
+            return;
+        })
+    });
+
+</script>
+@endpush

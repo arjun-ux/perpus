@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Kelas;
 use App\Models\Member;
 use App\Models\Publisher;
+use App\Models\Setting;
 use App\Models\User;
 use App\Service\MemberService;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -68,31 +69,18 @@ class DatabaseSeeder extends Seeder
             'name' => '9 D'
         ]);
 
-        // member user
-        $member1 = User::create([
-            'name' => 'member1',
-            'username' => Member::generateUsername(),
-            'email' => 'member1@perpus.com',
-            'password' => 'popo',
-            'role' => 'Member',
-        ]);
-
-        Member::create([
-            'user_id' => '2',
-            'class_id' => '1',
-            'username' => $member1->username,
-            'status' => '2'
-        ]);
-
         Publisher::create([
             'name' => 'Airlangga'
         ]);
+        Publisher::create([
+            'name' => 'CV PUSTAKA'
+        ]);
 
         Category::create([
-            'name' => 'Sejarah'
+            'name' => 'Legenda'
         ]);
         Category::create([
-            'name' => 'Menghayal'
+            'name' => 'Fiksi'
         ]);
 
         Books::create([
@@ -106,7 +94,7 @@ class DatabaseSeeder extends Seeder
             'stock' => '50',
         ]);
         Books::create([
-            'title' => 'Avatar',
+            'title' => 'Naruto',
             'author' => 'Arjun',
             'publisher_id' => '1',
             'category_id' => '1',
@@ -116,7 +104,7 @@ class DatabaseSeeder extends Seeder
             'stock' => '50',
         ]);
         Books::create([
-            'title' => 'Avatar',
+            'title' => 'One Piece',
             'author' => 'Arjun',
             'publisher_id' => '1',
             'category_id' => '2',
@@ -126,15 +114,47 @@ class DatabaseSeeder extends Seeder
             'stock' => '50',
         ]);
         Books::create([
-            'title' => 'Avatar',
+            'title' => 'Cinta Anak SMA',
             'author' => 'Arjun',
             'publisher_id' => '1',
-            'category_id' => '1',
+            'category_id' => '2',
             'isbn' => '10192929',
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
         ]);
+        Books::create([
+            'title' => 'Kisah Kehidupan SMA',
+            'author' => 'Arjun',
+            'publisher_id' => '1',
+            'category_id' => '2',
+            'isbn' => '10192929',
+            'stock_rusak' => '20',
+            'stock_baik' => '30',
+            'stock' => '50',
+        ]);
+        Books::create([
+            'title' => 'Keluarga Cemara',
+            'author' => 'Arjun',
+            'publisher_id' => '1',
+            'category_id' => '2',
+            'isbn' => '10192929',
+            'stock_rusak' => '20',
+            'stock_baik' => '30',
+            'stock' => '50',
+        ]);
+        Books::create([
+            'title' => 'Pesantren Kenangan',
+            'author' => 'Arjun',
+            'publisher_id' => '1',
+            'category_id' => '2',
+            'isbn' => '10192929',
+            'stock_rusak' => '20',
+            'stock_baik' => '30',
+            'stock' => '50',
+        ]);
+
+        $this->call(MemberSeeder::class);
 
 
     }

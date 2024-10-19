@@ -38,13 +38,18 @@
                         <input type="text" class="form-control" id="adddenda" name="denda"
                         autocomplete="off" required placeholder="Contoh: Rp. 2000" oninput="formatRupiah(this)">
                     </div>
+                    <div class="mb-3">
+                        <label for="addhilang" class="form-label">Denda Jika Hilang</label>
+                        <input type="text" class="form-control" id="addhilang" name="denda_hilang"
+                        autocomplete="off" required placeholder="Contoh: Rp. 2000" oninput="formatRupiah(this)">
+                    </div>
 
                     <div class="mb-3">
                         <label for="addlogo" class="form-label">Logo Lembaga</label>
                         <input type="file" name="file" id="logo" required/>
                     </div>
 
-                    <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                    <button type="submit" class="btn btn-outline-primary me-2">Simpan</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="btn-close">Cancel</button>
                 </form>
             </div>

@@ -50,7 +50,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('user_store') }}",
+                    url: "{{ route('book.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
@@ -100,18 +100,18 @@
                     {data: 'stock_baik'},
                     {data: 'stock_rusak'},
                     {data: 'stock'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false,
+                    {data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
-                            const uid = row.id;
-                            const name = row.name;
+                            const bid = row.id;
+                            const name = row.title;
                             return `
                                 <button type="button" id="edit"
-                                    data-id="${uid}" data-name="${name}"
+                                    data-id="${bid}" data-name="${name}"
                                     class="btn btn-outline-warning btn-icon btn-xs">
                                     <i data-feather="edit-2"></i>
                                 </button>
                                 <button type="button" id="delete"
-                                    data-id="${uid}" data-name="${name}"
+                                    data-id="${bid}" data-name="${name}"
                                     class="btn btn-outline-danger btn-icon btn-xs">
                                     <i data-feather="trash-2" ></i>
                                 </button>
@@ -124,17 +124,17 @@
                 }
             });
             $('body').on('click', '#edit', function(){
-                var uid = $(this).attr('data-id');
+                var bid = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
 
-                $('#uid').text(uid)
-                $('#nama_user').text(name)
+                $('#bid').text(bid)
+                $('#nama_buku').text(name)
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('user_id') }}",
+                    url: "{{ route('book.show') }}",
                     data: {
-                        id: uid,
+                        bid: bid,
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
@@ -150,10 +150,15 @@
                             });
                         }
 
-                        $('#uid').val(res.id);
-                        $('#editnama').val(res.name);
-                        $('#editusername').val(res.username);
-                        $('#editemail').val(res.email);
+                        $('#bid').val(res.id);
+                        $('#edittitle').val(res.title);
+                        $('#editauthor').val(res.author);
+                        $('#editpublisher').val(res.publisher_id);
+                        $('#editcat').val(res.category_id);
+                        $('#editisbn').val(res.isbn);
+                        $('#editpublish').val(res.publish_date);
+                        $('#editrusak').val(res.stock_rusak);
+                        $('#editstock').val(res.stock_baik);
 
                         $('#modalEdit').modal('show');
 
@@ -180,7 +185,7 @@
                     var formData = $(this).serialize();
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('user_update') }}",
+                        url: "{{ route('books.update') }}",
                         data: formData + '&_token={{ csrf_token() }}',
                         success: function(res){
                             $('#modalEdit').modal('hide');
@@ -225,8 +230,8 @@
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
                 Swal.fire({
-                    title: 'Akan Menghapus User?',
-                    text: "User "+name+" Akan Terhapus !",
+                    title: 'Akan Menghapus Buku?',
+                    text: "Buku "+name+" Akan Terhapus !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -235,10 +240,10 @@
                 }).then((value)=>{
                     if(value.isConfirmed){
                         $.ajax({
-                            url: "{{ route('delete_user') }}",
+                            url: "{{ route('book.delete') }}",
                             type: 'POST',
                             data: {
-                                uid: id,
+                                bid: id,
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){

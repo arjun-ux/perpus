@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('image')->nullable();
             $table->string('borrowing_due')->nullable();
-            $table->decimal('denda')->nullable();
+            $table->integer('denda')->nullable();
+            $table->integer('denda_hilang')->nullable();
             $table->timestamps();
         });
     }

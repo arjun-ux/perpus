@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\ReturnsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Service\BukuService;
 use Illuminate\Support\Facades\Route;
 
 // route if unauthorized============================================================================================================
@@ -29,11 +32,24 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('role:Admin')->group(function(){
     Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
+    // pengembalian
+    Route::get('pengembalian', [ReturnsController::class, 'create'])->name('returns.create');
+    Route::post('pengembalian', [ReturnsController::class, 'get_borrow'])->name('returns.borrow');
+    Route::post('pengembalian-store', [ReturnsController::class, 'store'])->name('pengembalian.store');
+    // peminjaman
+    Route::get('borrow-index', [BorrowController::class, 'index'])->name('borrow.index');
+    Route::get('borrow-data', [BorrowController::class, 'data'])->name('borrow.data');
+    Route::get('borrow-create', [BorrowController::class, 'create'])->name('borrow.create');
+    Route::post('borrow-member', [BorrowController::class, 'cek_member_borrowing'])->name('cek_member_borrowing');
+    Route::get('borrow-data-buku', [BorrowController::class, 'getBooks'])->name('getBooks');
+    Route::post('borrow-store', [BorrowController::class, 'store'])->name('borrow.store');
     // data buku
     Route::get('books', [BukuController::class, 'index'])->name('book.index');
     Route::get('books-data', [BukuController::class, 'data'])->name('books.data');
-
-
+    Route::post('books-store', [BukuController::class, 'store'])->name('book.store');
+    Route::post('books-show', [BukuController::class, 'show'])->name('book.show');
+    Route::post('books-update', [BukuController::class, 'update'])->name('books.update');
+    Route::post('books-delete', [BukuController::class, 'destroy'])->name('book.delete');
     // kategori buku
     Route::get('category', [CategoryController::class, 'index'])->name('category.index');
     Route::get('category-data', [CategoryController::class, 'data'])->name('category.data');
@@ -72,4 +88,5 @@ Route::middleware('role:Admin')->group(function(){
     Route::post('settings-store', [SettingController::class, 'store'])->name('settings.store');
     Route::get('settings-edit', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('settings-update', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('settings-reset', [SettingController::class, 'reset'])->name('settings.reset');
 });

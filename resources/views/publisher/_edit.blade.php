@@ -9,6 +9,7 @@
             <div class="modal-body">
                 <form id="formEdit">
                     @csrf
+                    <input type="hidden" name="pid" id="pid">
                     <div class="mb-3">
                         <label for="editnama" class="form-label">Nama</label>
                         <input type="text" class="form-control" id="editnama" name="name" required

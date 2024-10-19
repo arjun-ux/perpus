@@ -134,7 +134,7 @@
                     type: 'POST',
                     url: "{{ route('publisher.show') }}",
                     data: {
-                        id: pid,
+                        pid: pid,
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
@@ -150,7 +150,7 @@
                             });
                         }
 
-                        $('#uid').val(res.id);
+                        $('#pid').val(res.id);
                         $('#editnama').val(res.name);
                         $('#editaddres').val(res.address);
                         $('#editemail').val(res.email);

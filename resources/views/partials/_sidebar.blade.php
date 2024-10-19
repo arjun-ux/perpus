@@ -30,13 +30,13 @@
                 <div class="collapse" id="Transaksi">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="" class="nav-link">Peminjaman</a>
+                            <a href="{{ route('borrow.create') }}" class="nav-link">Peminjaman</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">Pengembalian</a>
+                            <a href="{{ route('returns.create') }}" class="nav-link">Pengembalian</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">Data Peminjam</a>
+                            <a href="{{ route('borrow.index') }}" class="nav-link">Data Peminjam</a>
                         </li>
                     </ul>
                 </div>
