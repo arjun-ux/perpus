@@ -40,6 +40,7 @@ class BorrowService
     // get borrowing with memeber
     public static function borrowed($id){
         $data = Borrowing::where('member_id', $id)->latest()->first();
+
         if ($data) {
             # code...
             return $data;

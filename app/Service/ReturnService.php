@@ -20,8 +20,13 @@ class ReturnService
     public static function get_borrowing($req){
         // get member
         $member = MemberService::get_member($req);
+
         // get peminjaman
         $borrow = BorrowService::borrowed($member->id);
+        // dd($borrow);
+        if ($borrow == null) {
+            return response()->json(['message' => 'Tidak Ada Pinjaman'],404);
+        }
         if ($borrow && $borrow->status == "Selesai") {
             return response()->json(['message' => 'Tidak Ada Pinjaman'],404);
         }
