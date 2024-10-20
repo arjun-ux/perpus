@@ -23,7 +23,7 @@
 ### Instalation
     -- Donwload file di https://github.com/arjun-ux/perpus
     -- atau bisa juga dengan menggunakan perintah "git clone https://github.com/arjun-ux/perpus.git" diterminal atau git
-    -- Jalankan perintah "composer install" untuk menginstal semua library yang dibutuhkan
+    -- Jalankan perintah "composer install" atau "composer update" untuk menginstal semua library yang dibutuhkan
     -- setting file .env di dalam folder perpus
     -- setting .env
     -- jalanakan perintah "php artisan key:generate"
@@ -36,3 +36,13 @@
     -- Username "admin"
     -- password "popo"
 
+<?php
+$direktori = __DIR__ . '/perpus'; // arahkan ke folder projek
+
+if (is_dir($direktori)) {
+    header("Location: /perpus"); // arahkan ke folder projek
+    exit;
+} else {
+    echo "Path yang diberikan bukan direktori.";
+}
+?>
