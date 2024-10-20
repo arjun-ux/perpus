@@ -36,7 +36,6 @@
     -- Username "admin"
     -- password "popo"
 
-<?php
 $direktori = __DIR__ . '/perpus'; // arahkan ke folder projek
 
 if (is_dir($direktori)) {
@@ -45,4 +44,4 @@ if (is_dir($direktori)) {
 } else {
     echo "Path yang diberikan bukan direktori.";
 }
-?>
+
