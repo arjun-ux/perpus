@@ -27,7 +27,8 @@
     -- setting file .env di dalam folder perpus
     -- setting .env
     -- jalanakan perintah "php artisan key:generate"
-    -- Jalankan Perintah "php artisan migrate" untuk membuat database
+    -- Jalankan Perintah "php artisan migrate" untuk membuat database jika belum ada
+    -- Jika database sudah ada maka gunakan perintah "php artisan migrate:fresh"
     -- Jalankan Perintah "php artisan db:seed" untuk mengisi database dengan bawaaan
     -- Jalankan Perinta "php artisan storage:link" 
 
