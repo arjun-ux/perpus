@@ -12,7 +12,8 @@ class MemberService
 
     // get member
     public static function get_member($req){
-        $member = Member::with('user','kelas')->where('username', $req->username)->first();
+        $member = Member::with('user','kelas','borrow')->where('username', $req->username)->first();
+
         if ($member) {
             return $member;
         }

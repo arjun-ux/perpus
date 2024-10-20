@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class BorrowService
 {
-    // get borrowing by tgl peminjaman
+    // get borrowing by anggota
     public static function get_by_anggota($req){
         $data = User::with('member.borrow.book')->where('id', $req)->get();
         // dd($data);
@@ -25,11 +25,11 @@ class BorrowService
     public static function get_by_tgl_peminjaman($req){
         $data = Borrowing::with('member.user','book')->where('borrow_date', $req)->get();
         if ($data->isEmpty()) {
-            return $data;
+            return null;
         }
-        return null;
+        return $data;
     }
-    // get borrowing by tgl peminjaman
+    // get borrowing by tgl pengembalian
     public static function get_by_tgl_pengembalian($req){
         $data = Borrowing::with('member.user','book')->where('returned_date', $req)->get();
         if ($data->isEmpty()) {

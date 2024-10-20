@@ -41,18 +41,17 @@ class DashboardController extends Controller
         if ($datas == null) {
             return redirect()->back()->with('error', 'Data tidak ditemukan');
         }
-        $tgl = $datas['0']->borrow_date;
-        return view('laporan.tgl_peminjaman', compact('datas', 'tgl','setting'));
+        return view('laporan.tgl_peminjaman', compact('datas','setting'));
     }
     // data laporan by tgl pengembalian
     public function by_tgl_pengembalian(Request $req){
         $setting = Setting::first();
         $datas = BorrowService::get_by_tgl_pengembalian($req->tgl);
+
         if ($datas == null) {
             return redirect()->back()->with('error', 'Data tidak ditemukan');
         }
-        $tgl = $datas['0']->returned_date;
-        return view('laporan.tgl_pengembalian', compact('datas', 'tgl','setting'));
+        return view('laporan.tgl_pengembalian', compact('datas','setting'));
     }
 
     // get user member
@@ -69,7 +68,6 @@ class DashboardController extends Controller
     public function by_member(Request $req){
         $setting = Setting::first();
         $datas = BorrowService::get_by_anggota($req->member);
-        // dd($datas);
 
         if ($datas == null) {
             return redirect()->back()->with('error', 'Data tidak ditemukan');

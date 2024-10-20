@@ -50,7 +50,7 @@
             </table>
         </div>
 
-        <p style='text-align: center;'>Laporan Perpustakaan Berdasarkan Tanggal Peminjaman ({{ $tgl }})</p>
+        <p style='text-align: center;'>Laporan Perpustakaan Berdasarkan Tanggal Peminjaman ({{ $datas['0']->returned_date }})</p>
 
 
     <!-- core:js -->

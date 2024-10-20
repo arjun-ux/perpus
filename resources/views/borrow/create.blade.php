@@ -68,11 +68,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 grid-margin stretch-card" id="cardbook" style="display: none">
+        <div class="col-md-12 grid-margin stretch-card" id="cardbook" >
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">JUDUL BUKU</label>
                                 <h5 id="title"></h5>
@@ -82,29 +82,23 @@
                                 <h5 id="author"></h5>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label">ID MEMBER</label>
-                                <h5 id="member_id"></h5>
+                                <label class="form-label">STOK BUKU</label>
+                                <h5 id="stok_buku"></h5>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">NAMA MEMBER</label>
-                                <h5 id="member_name"></h5>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label class="form-label">KELAS</label>
-                                <h5 id="member_kls"></h5>
+                                <label class="form-label">STOK BAIK</label>
+                                <h5 id="stok_baik"></h5>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">PEMINJAMAN SEBELUMNYA</label>
-                                <h5 id="peminjaman_sebelumnya"></h5>
+                                <label class="form-label">STOK RUSAK</label>
+                                <h5 id="stok_rusak"></h5>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <img src="{{ asset('assets/images/logo.png') }}" alt="Buku" class="img-fluid">
+                                <img src="{{ asset('assets/images/logo.png') }}" alt="Buku" class="img-fluid" width="200px">
                             </div>
                         </div>
                     </div>
@@ -182,6 +176,10 @@
                                 return {
                                     id: book.id,
                                     text: book.title,
+                                    author: book.author, // Tambahkan properti author
+                                    stok: book.stock, // Tambahkan properti stok
+                                    stok_baik: book.stock_baik, // Tambahkan properti stok_baik
+                                    stok_rusak: book.stock_rusak
                                 };
                             }),
                             pagination: {
@@ -192,12 +190,25 @@
                 },
                 minimumInputLength: 3
             });
+            $('#addIdbook').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
+                var judul = data.text;
+                $('#title').text(data.text);
+                $('#author').text(data.author);
+                $('#stok_buku').text(data.stok);
+                $('#stok_baik').text(data.stok_baik);
+                $('#stok_rusak').text(data.stok_rusak);
+            });
 
 
 
 
             // Menangani pilihan buku
-            $('#addkondisi').on('change', function(e) {
+            $('#addkondisi').on('change', function() {
+
+                $('#book_id')
+
 
                 $('#btnsave').show();
                 $('#cardbook').show();
