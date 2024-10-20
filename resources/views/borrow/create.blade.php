@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 grid-margin stretch-card" id="cardbook" >
+        <div class="col-md-12 grid-margin stretch-card" id="cardbook" style="display: none">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
