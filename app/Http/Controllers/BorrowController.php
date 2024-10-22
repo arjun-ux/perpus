@@ -52,7 +52,7 @@ class BorrowController extends Controller
     // cek username dan peminjaman sebelumnya
     public function cek_member_borrowing(Request $req){
 
-        $member = MemberService::get_member($req);
+        $member = MemberService::getLastBorrowWithDetails($req->username);
         if ($member) {
             return $member;
         }else {

@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\Log;
 
 class MemberService
 {
+    public static function getLastBorrowWithDetails($username)
+    {
+        $member = Member::with(['user', 'kelas', 'borrow' => function($query) {
+            $query->latest()->limit(1);
+        }])->where('username', $username)->first();
+
+        if ($member) {
+            $result = [
+                'member' => $member,
+                'user' => $member->user,
+                'kelas' => $member->kelas,
+                'last_borrow' => $member->borrow,
+            ];
+            return $result;
+        }
+
+        return null;
+    }
 
     // get member
     public static function get_member($req){

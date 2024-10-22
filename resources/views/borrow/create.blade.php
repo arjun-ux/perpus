@@ -123,18 +123,16 @@
                             username: nilai,
                         },
                         success: function(res){
-                            console.log(res)
                             $('#member_id').text(res.username)
                             $('#member_name').text(res.user.name)
                             $('#member_kls').text(res.kelas.name)
 
-                            var borrowing = res.borrow;
-                            if(borrowing == null){
+                            if(res.last_borrow == null){
                                 $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
-                            }
-                            else{
+                            }else if(res.last_borrow.status == 'Selesai'){
+                                $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
+                            }else{
                                 $('#peminjaman_sebelumnya').html('<span class="badge bg-danger">Masih Memiliki Pinjaman Buku</span>');
-
                             }
                         },
                         error: function(xhr, error){
