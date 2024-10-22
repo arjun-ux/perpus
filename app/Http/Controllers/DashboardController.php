@@ -65,13 +65,11 @@ class DashboardController extends Controller
         return response()->json($member);
     }
     // data laporan by anggota
-    public function by_member(Request $req){
-        $setting = Setting::first();
-        $datas = BorrowService::get_by_anggota($req->member);
+    public function by_member(Request $req)
+{
+    $setting = Setting::first();
+    $datas = BorrowService::get_by_anggota($req->member);
 
-        if ($datas == null) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan');
-        }
-        return view('laporan.by_member', compact('setting','datas'));
-    }
+    return view('laporan.by_member', compact('setting', 'datas'));
+}
 }

@@ -40,10 +40,10 @@
                     @foreach ($datas as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->member->borrow->book->title }}</td>
-                            <td>{{ $item->member->borrow->borrow_date }}</td>
-                            <td>{{ $item->member->borrow->returned_date }}</td>
+                            <td>{{ $item->name ?? 'N/A' }}</td>
+                            <td>{{ $item->member->borrow->book->title ?? 'N/A' }}</td>
+                            <td>{{ $item->member->borrow->borrow_date ?? 'N/A' }}</td>
+                            <td>{{ $item->member->borrow->returned_date ?? 'N/A' }}</td>
                         </tr>
                     @endforeach
                 </tbody>

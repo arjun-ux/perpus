@@ -44,6 +44,7 @@
                         <div class="col-md-8" id="wrapper-results" style="display: none">
                             <div class="alert alert-danger" style="display: none">
                                 <h6>Denda Kerusakan Atau Kehilangan Buku Sebesar <span id="denda_hilang"></span></h6>
+                                <h6>Denda Kerusakan Atau Kehilangan Buku Sebesar <span id="denda_awal"></span></h6>
                             </div>
                             <div class="row justify-content-center text-center">
                                 <div class="col-md-6">
@@ -127,12 +128,15 @@
                             username: nilai,
                         },
                         success: function(res){
+                            console.log(res)
                             $('#member_id').text(res.member.username)
                             $('#member_name').text(res.member.user.name)
                             $('#member_kls').text(res.member.kelas.name)
+
                             $('#denda_awal').text(res.overdue.fine)
                             $('#denda_hilang').text(res.setting.denda_hilang)
-
+                            console.log($('#denda_awal').text(res.overdue.fine))
+                            console.log($('#denda_hilang').text(res.setting.denda_hilang))
                             var late = res.total_fine;
                             $('#borrow_id').val(res.borrow.id)
                             $('#keterlambatan').val(res.overdue.overdue_days)
@@ -190,31 +194,38 @@
             });
 
             $('#addkondisi').on('change', function() {
-                var kondisi_awal = $('#condition').text();
-                var kondisi_kembali = $(this).val();
-                var dendaKeterlambatan = parseInt($('#total_denda').val());
-                var dendaHilang = parseInt($('#denda_hilang').text());
-                var totalDenda = dendaKeterlambatan;
-
-                if (kondisi_awal === kondisi_kembali) {
-                    // Kondisi sama, hanya denda keterlambatan
-                    totalDenda = dendaKeterlambatan;
-                    $('#denda').text(formatRupiah(totalDenda))
-                    $('#total_denda').val(totalDenda)
-                } else if (kondisi_awal === 'Baik' && (kondisi_kembali === 'Rusak' || kondisi_kembali === 'Hilang')) {
-                    // Dari Baik ke Rusak atau Hilang
-                    totalDenda += dendaHilang;
-                    $('#denda').text(formatRupiah(totalDenda))
-                    $('#total_denda').val(totalDenda)
-                } else if (kondisi_awal === 'Rusak' && kondisi_kembali === 'Hilang') {
-                    // Dari Rusak ke Hilang
-                    totalDenda += dendaHilang;
-                    $('#denda').text(formatRupiah(totalDenda))
-                    $('#total_denda').val(totalDenda)
-                }
-
-
+                hitungDenda();
             });
+
+            function hitungDenda() {
+                var kondisi_awal = $('#condition').text().trim();
+                var kondisi_kembali = $('#addkondisi').val();
+                var dendaAwal = parseInt($('#denda_awal').text().replace(/[^\d]/g, '')) || 0;
+                var dendaHilang = parseInt($('#denda_hilang').text().replace(/[^\d]/g, '')) || 0;
+
+                console.log(dendaAwal)
+                console.log(dendaHilang)
+                var totalDenda = dendaAwal; // Inisialisasi dengan denda awal (keterlambatan)
+
+                // Jika kondisi awal dan kondisi kembali berbeda
+                if (kondisi_awal !== kondisi_kembali) {
+                    if (kondisi_kembali === 'Rusak' && kondisi_awal === 'Baik') {
+                        // Dari Baik ke Rusak
+                        totalDenda += dendaHilang;
+                    } else if (kondisi_kembali === 'Hilang') {
+                        // Jika berubah menjadi Hilang, selalu tambahkan denda hilang
+                        totalDenda += dendaHilang;
+                    }
+                }
+                // Jika kondisi awal dan kondisi kembali sama, hanya denda awal (keterlambatan) yang dibebankan
+
+                // Update tampilan
+                $('#denda').text(formatRupiah(totalDenda));
+                $('#total_denda').val(totalDenda);
+            }
+
+
+
 
 
 
