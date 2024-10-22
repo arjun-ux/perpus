@@ -6,9 +6,7 @@
                 <h4 class="mb-3 mb-md-0">Data Peminjam</h4>
             </div>
             <div class="d-flex align-items-center flex-wrap text-nowrap">
-                {{--  <button type="button" id="triggerModalAdd" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="book-open"></i>
-                </button>  --}}
+
             </div>
         </div>
         <div class="col-md-12 grid-margin stretch-card">

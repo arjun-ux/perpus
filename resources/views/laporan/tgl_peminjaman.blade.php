@@ -20,6 +20,7 @@
 
     </head>
     <body onload='window.print()' style='font-family: Quicksand, sans-serif'>
+
         <img src='{{ isset($setting) && $setting->image ? asset('storage/logo/' . basename($setting->image)) : asset('assets/images/logo.png') }}' style='height: 90px; width: 90px; margin-top: 10px; margin-left: 10px; margin-bottom: -50px;'>
         <img src='{{ asset('assets/images/LOGO-PERPUSNAS.png') }}' style='display: block; margin-left: auto; width: 90px; margin-bottom: -70px; margin-top: -38px; margin-right: 5px;'>
         <h3 class='text-center' style='font-family: Quicksand, sans-serif; margin-top: -30px;'>.:: Laporan Perpustakaan ::.</h3>

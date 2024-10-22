@@ -120,6 +120,7 @@
                 var nilai = $(this).val();
 
                 if(nilai.length == 10){
+                    $('#loader-container').show()
                     $.ajax({
                         url: "{{ route('returns.borrow') }}",
                         method: "POST",
@@ -128,7 +129,7 @@
                             username: nilai,
                         },
                         success: function(res){
-                            console.log(res)
+                            $('#loader-container').hide()
                             $('#member_id').text(res.member.username)
                             $('#member_name').text(res.member.user.name)
                             $('#member_kls').text(res.member.kelas.name)
@@ -172,6 +173,7 @@
 
                         },
                         error: function(xhr, error){
+                            $('#loader-container').hide()
                             if (xhr.status === 404) {
                                 toastr.error(xhr.responseJSON.message);
                             } else {
@@ -231,13 +233,13 @@
 
             $('#formAdd').submit(function(e){
                 e.preventDefault();
-
+                $('#loader-container').show()
                 $.ajax({
                     url: "{{ route('pengembalian.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
-                        $('#modalAdd').modal('hide');
+                        $('#loader-container').hide()
                         Swal.fire({
                             title: res.message,
                             icon: 'success',
@@ -250,6 +252,7 @@
                         window.location.reload();
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide()
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {

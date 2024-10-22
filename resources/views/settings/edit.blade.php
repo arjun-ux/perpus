@@ -65,6 +65,7 @@
     $('#formEdit').submit(function(e){
         e.preventDefault();
         var formdata = new FormData(this);
+        $('#loader-container').show();
         $.ajax({
             url: "{{ route('settings.update') }}",
             method: 'POST',
@@ -72,6 +73,7 @@
             contentType: false,
             processData: false,
             success: function(res){
+                $('#loader-container').hide();
                 Swal.fire({
                     title: res.message,
                     icon: 'success',
@@ -81,9 +83,10 @@
                     showConfirmButton: false,
                     timerProgressBar: true,
                 });
-                {{--  window.location.href="{{ route('settings.index') }}";  --}}
+                window.location.href="{{ route('settings.index') }}";
             },
             error: function(xhr, error){
+                $('#loader-container').hide();
                 if (xhr.status === 404) {
                     toastr.error(xhr.responseJSON.message);
                 } else {

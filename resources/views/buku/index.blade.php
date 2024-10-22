@@ -48,13 +48,14 @@
 
             $('#formAdd').submit(function(e){
                 e.preventDefault();
-
+                $('#loader-container').show();
+                $('#modalAdd').modal('hide');
                 $.ajax({
                     url: "{{ route('book.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
-                        $('#modalAdd').modal('hide');
+                        $('#loader-container').hide();
                         Swal.fire({
                             title: res.message,
                             icon: 'success',
@@ -67,6 +68,7 @@
                         $('#tbl_user').DataTable().ajax.reload();
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide();
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {
@@ -130,6 +132,7 @@
                 $('#bid').text(bid)
                 $('#nama_buku').text(name)
 
+                $('#loader-container').show();
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('book.show') }}",
@@ -138,6 +141,7 @@
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
+                        $('#loader-container').hide();
                         if (res.status === 404){
                             Swal.fire({
                                 title: res.message,
@@ -164,6 +168,7 @@
 
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide();
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {
@@ -182,13 +187,15 @@
                 })
                 $('#formEdit').submit(function(e){
                     e.preventDefault();
+                    $('#loader-container').show();
                     var formData = $(this).serialize();
+                    $('#modalEdit').modal('hide');
                     $.ajax({
                         type: 'POST',
                         url: "{{ route('books.update') }}",
                         data: formData + '&_token={{ csrf_token() }}',
                         success: function(res){
-                            $('#modalEdit').modal('hide');
+                            $('#loader-container').hide();
                             Swal.fire({
                                 title: res.message,
                                 icon: 'success',
@@ -202,6 +209,7 @@
                             })
                         },
                         error: function(xhr, error){
+                            $('#loader-container').hide();
                             if (xhr.status === 404) {
                                 toastr.error(xhr.responseJSON.message);
                             } else {
@@ -239,6 +247,7 @@
                     confirmButtonText: 'Ya, Hapus!'
                 }).then((value)=>{
                     if(value.isConfirmed){
+                        $('#loader-container').show();
                         $.ajax({
                             url: "{{ route('book.delete') }}",
                             type: 'POST',
@@ -247,6 +256,7 @@
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){
+                                $('#loader-container').hide();
                                 Swal.fire({
                                     title: res.message,
                                     icon: 'success',
@@ -260,6 +270,7 @@
                                 });
                             },
                             error: function(xhr, error){
+                                $('#loader-container').hide();
                                 if (xhr.status === 404) {
                                     toastr.error(xhr.responseJSON.message);
                                 } else {

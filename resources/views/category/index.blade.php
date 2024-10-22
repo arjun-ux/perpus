@@ -43,13 +43,14 @@
 
             $('#formAdd').submit(function(e){
                 e.preventDefault();
-
+                $('#modalAdd').modal('hide');
+                $('#loader-container').show();
                 $.ajax({
                     url: "{{ route('category.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
-                        $('#modalAdd').modal('hide');
+                        $('#loader-container').hide();
                         Swal.fire({
                             title: res.message,
                             icon: 'success',
@@ -62,6 +63,7 @@
                         $('#tbl_user').DataTable().ajax.reload();
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide();
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {
@@ -117,7 +119,7 @@
                 var cid = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
 
-                console.log(name);
+                $('#loader-container').show();
 
                 $('#cid').text(cid)
                 $('#category_name').text(name)
@@ -130,6 +132,7 @@
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(res){
+                        $('#loader-container').hide();
                         if (res.status === 404){
                             Swal.fire({
                                 title: res.message,
@@ -148,6 +151,7 @@
 
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide();
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {
@@ -166,13 +170,15 @@
                 })
                 $('#formEdit').submit(function(e){
                     e.preventDefault();
+                    $('#loader-container').show();
                     var formData = $(this).serialize();
+                    $('#modalEdit').modal('hide');
                     $.ajax({
                         type: 'POST',
                         url: "{{ route('category.update') }}",
                         data: formData + '&_token={{ csrf_token() }}',
                         success: function(res){
-                            $('#modalEdit').modal('hide');
+                            $('#loader-container').hide();
                             Swal.fire({
                                 title: res.message,
                                 icon: 'success',
@@ -186,6 +192,7 @@
                             })
                         },
                         error: function(xhr, error){
+                            $('#loader-container').hide();
                             if (xhr.status === 404) {
                                 toastr.error(xhr.responseJSON.message);
                             } else {
@@ -217,6 +224,7 @@
                     confirmButtonText: 'Ya, Hapus!'
                 }).then((value)=>{
                     if(value.isConfirmed){
+                        $('#loader-container').show();
                         $.ajax({
                             url: "{{ route('category.delete') }}",
                             type: 'POST',
@@ -225,6 +233,7 @@
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(res){
+                                $('#loader-container').hide();
                                 Swal.fire({
                                     title: res.message,
                                     icon: 'success',
@@ -238,6 +247,7 @@
                                 });
                             },
                             error: function(xhr, error){
+                                $('#loader-container').hide();
                                 if (xhr.status === 404) {
                                     toastr.error(xhr.responseJSON.message);
                                 } else {

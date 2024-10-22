@@ -51,6 +51,9 @@
 		<!-- partial -->
 
 		<div class="page-wrapper">
+            <div class="loader-container" id="loader-container" style="display: none">
+                <div class="loader"></div>
+            </div>
 
 			<!-- partial:partials/_navbar.html -->
 			@include('partials._navbar')

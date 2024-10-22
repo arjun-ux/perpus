@@ -115,6 +115,7 @@
                 var nilai = $(this).val();
 
                 if(nilai.length == 10){
+                    $('#loader-container').show()
                     $.ajax({
                         url: "{{ route('cek_member_borrowing') }}",
                         method: "POST",
@@ -123,6 +124,7 @@
                             username: nilai,
                         },
                         success: function(res){
+                            $('#loader-container').hide()
                             $('#member_id').text(res.username)
                             $('#member_name').text(res.user.name)
                             $('#member_kls').text(res.kelas.name)
@@ -136,6 +138,7 @@
                             }
                         },
                         error: function(xhr, error){
+                            $('#loader-container').hide()
                             if (xhr.status === 404) {
                                 toastr.error(xhr.responseJSON.message);
                             } else {
@@ -190,8 +193,7 @@
             });
             $('#addIdbook').on('select2:select', function (e) {
                 var data = e.params.data;
-                console.log(data);
-                var judul = data.text;
+
                 $('#title').text(data.text);
                 $('#author').text(data.author);
                 $('#stok_buku').text(data.stok);
@@ -205,22 +207,19 @@
             // Menangani pilihan buku
             $('#addkondisi').on('change', function() {
 
-                $('#book_id')
-
-
                 $('#btnsave').show();
                 $('#cardbook').show();
             });
 
             $('#formAdd').submit(function(e){
                 e.preventDefault();
-
+                $('#loader-container').show();
                 $.ajax({
                     url: "{{ route('borrow.store') }}",
                     method: 'POST',
                     data: $('#formAdd').serialize(),
                     success: function(res){
-                        $('#modalAdd').modal('hide');
+                        $('#loader-container').hide();
                         Swal.fire({
                             title: res.message,
                             icon: 'success',
@@ -233,6 +232,7 @@
                         window.location.reload();
                     },
                     error: function(xhr, error){
+                        $('#loader-container').hide();
                         if (xhr.status === 404) {
                             toastr.error(xhr.responseJSON.message);
                         } else {
