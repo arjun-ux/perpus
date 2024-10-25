@@ -19,7 +19,7 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                    <th>USERNAME</th>
+                                    <th>NIS</th>
                                     <th>NAMA</th>
                                     <th>KELAS</th>
                                     <th>STATUS MEMBERSHIP</th>

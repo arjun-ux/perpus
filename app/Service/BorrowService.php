@@ -54,7 +54,7 @@ class BorrowService
     }
     // data peminjam
     public static function data_peminjam(){
-        $data = Borrowing::with('member.user','book')->get();
+        $data = Borrowing::with('member.user','book')->orderBy('created_at', 'desc')->get();
         // $data = DB::table('members',)
         return $data;
     }

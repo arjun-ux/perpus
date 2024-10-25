@@ -17,9 +17,9 @@
                             <form id="formAdd">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="addIdMember" class="form-label">ID MEMBER</label>
+                                    <label for="addIdMember" class="form-label">NOMOR INDUK SISWA (NIS)</label>
                                     <input type="text" class="form-control" id="addIdMember" name="username"
-                                    autocomplete="off" required placeholder="Member ID" autofocus>
+                                    autocomplete="off" required placeholder="Masukan Nis" autofocus>
                                 </div>
                                 <div class="mb-3">
 									<label class="form-label">Pilih Buku</label>
@@ -46,11 +46,11 @@
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label class="form-label">ID MEMBER</label>
+                                <label class="form-label">NOMOR INDUK SISWA (NIS)</label>
                                 <h5 id="member_id"></h5>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">NAMA MEMBER</label>
+                                <label class="form-label">NAMA SISWA</label>
                                 <h5 id="member_name"></h5>
                             </div>
                         </div>

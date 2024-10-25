@@ -35,9 +35,6 @@
                         <li class="nav-item">
                             <a href="{{ route('returns.create') }}" class="nav-link">Pengembalian</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('borrow.index') }}" class="nav-link">Data Peminjam</a>
-                        </li>
                     </ul>
                 </div>
             </li>
@@ -81,10 +78,22 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="{{ route('laporan.index') }}" class="nav-link">
-                    <i class="link-icon" data-feather="file-text"></i>
-                    <span class="link-title">Laporan Perpustakaan</span>
+                <a class="nav-link" data-bs-toggle="collapse" href="#laporan" role="button" aria-expanded="false" aria-controls="laporan">
+                    <i class="link-icon" data-feather="folder"></i>
+                    <span class="link-title">Laporan</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
+                <div class="collapse" id="laporan">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.index') }}" class="nav-link">Laporan Perpustakaan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('borrow.index') }}" class="nav-link">Data Peminjam</a>
+                        </li>
+
+                    </ul>
+                </div>
             </li>
 
             <li class="nav-item nav-category">Settings</li>

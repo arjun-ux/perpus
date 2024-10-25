@@ -24,6 +24,7 @@
                                     <th>PENERBIT</th>
                                     <th>BUKU BAIK</th>
                                     <th>BUKU RUSAK</th>
+                                    <th>STOK BUKU</th>
                                     <th>JUMLAH BUKU</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -102,6 +103,7 @@
                     {data: 'stock_baik'},
                     {data: 'stock_rusak'},
                     {data: 'stock'},
+                    {data: 'jumlah_buku'},
                     {data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             const bid = row.id;

@@ -41,7 +41,7 @@ class MemberService
     // data
     public static function data(){
         try {
-            $data = Member::with('user','kelas')->get('members.*');
+            $data = Member::with('user','kelas')->orderBy('created_at', 'desc')->get('members.*');
             return $data;
         } catch (\Throwable $th) {
             //throw $th;

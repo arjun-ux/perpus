@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class PublisherService
 {
     public static function data_publisher(){
-        $data = Publisher::query();
+        $data = Publisher::query()->orderBy('created_at', 'desc');
         return $data;
     }
 

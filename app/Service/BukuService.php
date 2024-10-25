@@ -14,7 +14,7 @@ class BukuService
     }
     // data
     public static function data_buku(){
-        $data = Books::with('publisher')->get();
+        $data = Books::with('publisher')->orderBy('created_at', 'desc')->get();
         return $data;
     }
 
@@ -42,6 +42,7 @@ class BukuService
                 'stock_rusak' => $req->stock_rusak,
                 'stock_baik' => $req->stock_baik,
                 'stock' => $jumlah_buku,
+                'jumlah_buku' => $jumlah_buku,
             ]);
             DB::commit();
             return response()->json(['message' => 'Berhasil Menambah Buku'],200);
@@ -73,6 +74,7 @@ class BukuService
                 'stock_rusak' => $req->stock_rusak,
                 'stock_baik' => $req->stock_baik,
                 'stock' => $jumlah_buku,
+                'jumlah_buku' => $jumlah_buku,
             ]);
             DB::commit();
             return response()->json(['message' => 'Berhasil Update Buku'],200);

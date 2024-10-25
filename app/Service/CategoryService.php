@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class CategoryService
 {
     public static function data_category(){
-        return Category::query();
+        return Category::query()->orderBy('created_at', 'desc');
     }
 
     // store kategori
