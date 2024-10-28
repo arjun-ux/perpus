@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Books;
+use App\Models\Returning;
 use Illuminate\Support\Facades\DB;
 
 class BukuService
@@ -17,10 +18,17 @@ class BukuService
         $data = Books::with('publisher')->orderBy('created_at', 'desc')->get();
         return $data;
     }
-
-    // stock semua buku
+    // jumlah semua buku
+    public static function jumlah_buku(){
+        return Books::sum('jumlah_buku');
+    }
+    // stock buku saat ini
     public static function stock_buku(){
         return Books::sum('stock');
+    }
+    // buku hilang
+    public static function buku_hilang(){
+        return Returning::where('condition', 'Hilang')->count();
     }
 
     // store buku

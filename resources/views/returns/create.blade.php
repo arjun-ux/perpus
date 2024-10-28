@@ -17,10 +17,12 @@
                             <form id="formAdd">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="addIdMember" class="form-label">NOMOR INDUK SISWA (NIS)</label>
-                                    <input type="text" class="form-control" id="addIdMember" name="username"
-                                    autocomplete="off" required placeholder="Masukan Nis" autofocus>
-                                </div>
+									<label class="form-label">PILIH NIS</label>
+									<select class="js-example-basic-single form-select select2"
+                                        id="addIdMember" name="username" required data-width="100%">
+										<option value="" disabled selected>PILIH NIS</option>
+									</select>
+								</div>
                                 <div class="mb-3">
                                     <label for="addkondisi" class="form-label">KONDISI</label>
                                     <select name="condition" id="addkondisi" class="form-select" required>
@@ -115,85 +117,109 @@
 @push('script')
     <script>
         $(document).ready(function(){
-
-            $('#addIdMember').on('input', function() {
-                var nilai = $(this).val();
-
-                if(nilai.length == 10){
-                    $('#loader-container').show()
-                    $.ajax({
-                        url: "{{ route('returns.borrow') }}",
-                        method: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            username: nilai,
-                        },
-                        success: function(res){
-                            $('#loader-container').hide()
-                            $('#member_id').text(res.member.username)
-                            $('#member_name').text(res.member.user.name)
-                            $('#member_kls').text(res.member.kelas.name)
-
-                            $('#denda_awal').text(res.overdue.fine)
-                            $('#denda_hilang').text(res.setting.denda_hilang)
-                            console.log($('#denda_awal').text(res.overdue.fine))
-                            console.log($('#denda_hilang').text(res.setting.denda_hilang))
-                            var late = res.total_fine;
-                            $('#borrow_id').val(res.borrow.id)
-                            $('#keterlambatan').val(res.overdue.overdue_days)
-                            $('#total_denda').val(late)
-
-
-                            if(late == 0 ){
-                                $('#denda').html('<span class="badge bg-success">Tidak Ada Denda</span>');
-                                $('#status_pinjaman').html('<span class="badge bg-success">Tidak Terlambat</span>');
-                                $('#terlambat').html('<span class="badge bg-success">Tidak Terlambat</span>');
-                            }else{
-                                $('#denda').text(formatRupiah(res.overdue.fine))
-                                $('#status_pinjaman').html('<span class="badge bg-danger">Terlambat</span>');
-                                $('#terlambat').text((res.overdue.overdue_days+" Hari"))
+            $('#addIdMember').select2({
+                ajax: {
+                    url: "{{ route('getMember') }}",
+                    dataType: 'json',
+                    delay: 250, // Mengurangi jumlah request
+                    data: function (params) {
+                        return {
+                            q: params.term, // Mengambil kata kunci dari input
+                            page: params.page || 1 // Mengambil halaman saat ini
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.data.map(function(member) {
+                                return {
+                                    id: member.username,
+                                    text: member.username,
+                                };
+                            }),
+                            pagination: {
+                                more: data.current_page < data.last_page
                             }
+                        };
+                    }
+                },
+                minimumInputLength: 1
+            });
+            $('#addIdMember').on('select2:select', function (e) {
+                var data = e.params.data;
+                $('#loader-container').show()
+                $.ajax({
+                    url: "{{ route('returns.borrow') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        username: data.text,
+                    },
+                    success: function(res){
+                        $('#loader-container').hide()
+                        $('#member_id').text(res.member.username)
+                        $('#member_name').text(res.member.user.name)
+                        $('#member_kls').text(res.member.kelas.name)
 
-                            {{--  identitas buku  --}}
-                            $('#title').text(res.book.title)
-                            $('#author').text(res.book.author)
-
-                            var kondisi = res.borrow.condition;
-                            if(kondisi == "Baik"){
-                                $('#condition').html('<span class="badge bg-success">Baik</span>');
-                            }else{
-                                $('#condition').html('<span class="badge bg-danger">Rusak</span>');
-                            }
+                        $('#denda_awal').text(res.overdue.fine)
+                        $('#denda_hilang').text(res.setting.denda_hilang)
+                        console.log($('#denda_awal').text(res.overdue.fine))
+                        console.log($('#denda_hilang').text(res.setting.denda_hilang))
+                        var late = res.total_fine;
+                        $('#borrow_id').val(res.borrow.id)
+                        $('#keterlambatan').val(res.overdue.overdue_days)
+                        $('#total_denda').val(late)
 
 
+                        if(late == 0 ){
+                            $('#denda').html('<span class="badge bg-success">Tidak Ada Denda</span>');
+                            $('#status_pinjaman').html('<span class="badge bg-success">Tidak Terlambat</span>');
+                            $('#terlambat').html('<span class="badge bg-success">Tidak Terlambat</span>');
+                        }else{
+                            $('#denda').text(formatRupiah(res.overdue.fine))
+                            $('#status_pinjaman').html('<span class="badge bg-danger">Terlambat</span>');
+                            $('#terlambat').text((res.overdue.overdue_days+" Hari"))
+                        }
 
-                            $('#btnsave').show();
-                            $('#cardbook').show();
-                            $('#wrapper-results').show();
+                        {{--  identitas buku  --}}
+                        $('#title').text(res.book.title)
+                        $('#author').text(res.book.author)
 
-                        },
-                        error: function(xhr, error){
-                            $('#loader-container').hide()
-                            if (xhr.status === 404) {
-                                toastr.error(xhr.responseJSON.message);
-                            } else {
-                                let errorMessages = xhr.responseJSON.errors;
-                                if (errorMessages) {
-                                    Object.keys(errorMessages).forEach((key) => {
-                                        errorMessages[key].forEach((errorMessage) => {
-                                            toastr.error(errorMessage);
-                                        });
+                        var kondisi = res.borrow.condition;
+                        if(kondisi == "Baik"){
+                            $('#condition').html('<span class="badge bg-success">Baik</span>');
+                        }else{
+                            $('#condition').html('<span class="badge bg-danger">Rusak</span>');
+                        }
+
+
+
+                        $('#btnsave').show();
+                        $('#cardbook').show();
+                        $('#wrapper-results').show();
+
+                    },
+                    error: function(xhr, error){
+                        $('#loader-container').hide()
+                        if (xhr.status === 404) {
+                            toastr.error(xhr.responseJSON.message);
+                        } else {
+                            let errorMessages = xhr.responseJSON.errors;
+                            if (errorMessages) {
+                                Object.keys(errorMessages).forEach((key) => {
+                                    errorMessages[key].forEach((errorMessage) => {
+                                        toastr.error(errorMessage);
                                     });
-                                } else {
-                                    toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
-                                }
+                                });
+                            } else {
+                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
                             }
                         }
-                    });
-                }else{
-                    $(this).val(nilai.substring(0, 10));
-                }
+                    }
+                });
+
             });
+
+
 
             $('#addkondisi').on('change', function() {
                 hitungDenda();

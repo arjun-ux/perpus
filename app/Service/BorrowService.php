@@ -14,8 +14,15 @@ class BorrowService
 {
     // get borrowing by anggota
     public static function get_by_anggota($id){
-        $data = User::with('member.borrow.book')->where('id',$id)->get();
-
+        $data = DB::table('users')
+                ->join('members', 'users.id', '=', 'members.user_id')
+                ->join('borrowings', 'members.id', '=', 'borrowings.member_id')
+                ->join('books', 'borrowings.book_id', '=', 'books.id')
+                ->select('users.*', 'members.*', 'borrowings.*','books.title as book_title')
+                ->where('users.id', $id)
+                ->get();
+        // $data = User::with('member.borrow.book')->where('id',$id)->first();
+        // dd($data);
         if ($data->isEmpty()) {
             return null;
         }
@@ -60,6 +67,7 @@ class BorrowService
     }
     // proses peminjaman
     public static function borrow_save($req){
+        // dd($req);
         $member = Member::where('username', $req->username)->first('id'); // ambil data member
         $setting = Setting::first(); // ambil setting
 

@@ -50,7 +50,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="btn-close">Cancel</button>
+                    <a href="{{ route('settings.index') }}" class="btn btn-danger" >Cancel</a>
                 </form>
             </div>
         </div>

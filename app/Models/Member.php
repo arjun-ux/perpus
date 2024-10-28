@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Member extends Model
@@ -22,8 +23,8 @@ class Member extends Model
         return $this->belongsTo(Kelas::class, 'class_id', 'id');
     }
 
-    public function borrow(): HasOne
+    public function borrow(): HasMany
     {
-        return $this->hasOne(Borrowing::class);
+        return $this->hasMany(Borrowing::class);
     }
 }

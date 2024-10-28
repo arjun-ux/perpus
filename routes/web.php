@@ -46,7 +46,8 @@ Route::middleware('role:Admin')->group(function(){
     Route::get('borrow-index', [BorrowController::class, 'index'])->name('borrow.index');
     Route::get('borrow-data', [BorrowController::class, 'data'])->name('borrow.data');
     Route::get('borrow-create', [BorrowController::class, 'create'])->name('borrow.create');
-    Route::post('borrow-member', [BorrowController::class, 'cek_member_borrowing'])->name('cek_member_borrowing');
+    Route::post('borrowing-member', [BorrowController::class, 'cek_member_borrowing'])->name('cek_member_borrowing');
+    Route::get('borrow-member', [BorrowController::class, 'getMember'])->name('getMember');
     Route::get('borrow-data-buku', [BorrowController::class, 'getBooks'])->name('getBooks');
     Route::post('borrow-store', [BorrowController::class, 'store'])->name('borrow.store');
     // data buku

@@ -92,6 +92,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'Naruto',
@@ -102,6 +103,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'One Piece',
@@ -112,6 +114,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'Cinta Anak SMA',
@@ -122,6 +125,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'Kisah Kehidupan SMA',
@@ -132,6 +136,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'Keluarga Cemara',
@@ -142,6 +147,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
         Books::create([
             'title' => 'Pesantren Kenangan',
@@ -152,6 +158,7 @@ class DatabaseSeeder extends Seeder
             'stock_rusak' => '20',
             'stock_baik' => '30',
             'stock' => '50',
+            'jumlah_buku' => '50',
         ]);
 
         $this->call(MemberSeeder::class);

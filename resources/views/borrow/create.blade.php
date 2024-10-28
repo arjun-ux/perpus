@@ -17,10 +17,12 @@
                             <form id="formAdd">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="addIdMember" class="form-label">NOMOR INDUK SISWA (NIS)</label>
-                                    <input type="text" class="form-control" id="addIdMember" name="username"
-                                    autocomplete="off" required placeholder="Masukan Nis" autofocus>
-                                </div>
+									<label class="form-label">PILIH NIS</label>
+									<select class="js-example-basic-single form-select select2"
+                                        id="addIdMember" name="username" required data-width="100%">
+										<option value="" disabled selected>PILIH NIS</option>
+									</select>
+								</div>
                                 <div class="mb-3">
 									<label class="form-label">Pilih Buku</label>
 									<select class="js-example-basic-single form-select select2"
@@ -111,53 +113,76 @@
     <script>
         $(document).ready(function(){
 
-            $('#addIdMember').on('input', function() {
-                var nilai = $(this).val();
-
-                if(nilai.length == 10){
-                    $('#loader-container').show()
-                    $.ajax({
-                        url: "{{ route('cek_member_borrowing') }}",
-                        method: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            username: nilai,
-                        },
-                        success: function(res){
-                            $('#loader-container').hide()
-                            $('#member_id').text(res.username)
-                            $('#member_name').text(res.user.name)
-                            $('#member_kls').text(res.kelas.name)
-
-                            if(res.last_borrow == null){
-                                $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
-                            }else if(res.last_borrow.status == 'Selesai'){
-                                $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
-                            }else{
-                                $('#peminjaman_sebelumnya').html('<span class="badge bg-danger">Masih Memiliki Pinjaman Buku</span>');
+            $('#addIdMember').select2({
+                ajax: {
+                    url: "{{ route('getMember') }}",
+                    dataType: 'json',
+                    delay: 250, // Mengurangi jumlah request
+                    data: function (params) {
+                        return {
+                            q: params.term, // Mengambil kata kunci dari input
+                            page: params.page || 1 // Mengambil halaman saat ini
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.data.map(function(member) {
+                                return {
+                                    id: member.username,
+                                    text: member.username,
+                                };
+                            }),
+                            pagination: {
+                                more: data.current_page < data.last_page
                             }
-                        },
-                        error: function(xhr, error){
-                            $('#loader-container').hide()
-                            if (xhr.status === 404) {
-                                toastr.error(xhr.responseJSON.message);
-                            } else {
-                                let errorMessages = xhr.responseJSON.errors;
-                                if (errorMessages) {
-                                    Object.keys(errorMessages).forEach((key) => {
-                                        errorMessages[key].forEach((errorMessage) => {
-                                            toastr.error(errorMessage);
-                                        });
+                        };
+                    }
+                },
+                minimumInputLength: 1
+            });
+            $('#addIdMember').on('select2:select', function (e) {
+                var data = e.params.data;
+
+                $.ajax({
+                    url: "{{ route('cek_member_borrowing') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        username: data.text,
+                    },
+                    success: function(res){
+                        console.log(res)
+                        $('#loader-container').hide()
+                        $('#member_id').text(res.user.username)
+                        $('#member_name').text(res.user.name)
+                        $('#member_kls').text(res.kelas.name)
+
+                        if(res.last_borrow.length == 0){
+                            $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
+                        }else if(res.last_borrow.status == 'Selesai'){
+                            $('#peminjaman_sebelumnya').html('<span class="badge bg-success">Tidak ada pinjaman.</span>');
+                        }else{
+                            $('#peminjaman_sebelumnya').html('<span class="badge bg-danger">Masih Memiliki Pinjaman Buku</span>');
+                        }
+                    },
+                    error: function(xhr, error){
+                        $('#loader-container').hide()
+                        if (xhr.status === 404) {
+                            toastr.error(xhr.responseJSON.message);
+                        } else {
+                            let errorMessages = xhr.responseJSON.errors;
+                            if (errorMessages) {
+                                Object.keys(errorMessages).forEach((key) => {
+                                    errorMessages[key].forEach((errorMessage) => {
+                                        toastr.error(errorMessage);
                                     });
-                                } else {
-                                    toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
-                                }
+                                });
+                            } else {
+                                toastr.error('Terjadi kesalahan: ' + xhr.status + ' ' + xhr.statusText);
                             }
                         }
-                    });
-                }else{
-                    $(this).val(nilai.substring(0, 10));
-                }
+                    }
+                });
             });
 
             $('#addIdbook').select2({

@@ -16,17 +16,21 @@ class DashboardController extends Controller
     // index============================================================================================================
     public function index(){
         $haveSet = Setting::first();
-        $jml_buku = BukuService::stock_buku();
+        $jml_buku = BukuService::jumlah_buku();
+        $stok_buku = BukuService::stock_buku();
+        $buku_hilang = BukuService::buku_hilang();
         $jml_peminjam = BorrowService::jml_peminjam();
         $jml_return = ReturnService::jml_pengembalian();
 
         $data = [
             'set' => $haveSet,
             'jml_buku' => $jml_buku,
+            'stok_buku' => $stok_buku,
+            'buku_hilang' => $buku_hilang,
             'jml_peminjam' => $jml_peminjam,
             'jml_return' => $jml_return,
         ];
-        // dd($data);
+        // dd($buku_hilang);
         return view('admin.dashboard', compact('data'));
     }
     // laporan
@@ -66,10 +70,11 @@ class DashboardController extends Controller
     }
     // data laporan by anggota
     public function by_member(Request $req)
-{
-    $setting = Setting::first();
-    $datas = BorrowService::get_by_anggota($req->member);
+    {
+        $setting = Setting::first();
+        $datas = BorrowService::get_by_anggota($req->member);
 
-    return view('laporan.by_member', compact('setting', 'datas'));
-}
+
+        return view('laporan.by_member', compact('setting', 'datas'));
+    }
 }

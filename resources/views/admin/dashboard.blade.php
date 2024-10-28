@@ -35,7 +35,7 @@
                     <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-title mb-3">Buku</h6>
+                            <h6 class="card-title mb-3">Jumlah Buku</h6>
                             <div class="mb-2">
                                 <a href="{{ route('book.index') }}"><i class="icon-lg text-muted pb-3px" data-feather="shuffle"></i></a>
                             </div>
@@ -45,7 +45,47 @@
                                 <h2 class="mb-2">{{ $data['jml_buku'] }}</h2>
                             </div>
                         <div class="col-6 col-md-12 col-xl-7">
-                            <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                            <div id="" class="mt-md-3 mt-xl-0"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-4 grid-margin stretch-card" id="card-hover">
+                    <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-3">Jumlah Buku Hilang</h6>
+                            <div class="mb-2">
+                                <a href="{{ route('book.index') }}"><i class="icon-lg text-muted pb-3px" data-feather="shuffle"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h2 class="mb-2">{{ $data['buku_hilang'] }}</h2>
+                            </div>
+                        <div class="col-6 col-md-12 col-xl-7">
+                            <div id="" class="mt-md-3 mt-xl-0"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-4 grid-margin stretch-card" id="card-hover">
+                    <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-3">Stok Buku Saat Ini</h6>
+                            <div class="mb-2">
+                                <a href="{{ route('book.index') }}"><i class="icon-lg text-muted pb-3px" data-feather="shuffle"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h2 class="mb-2">{{ $data['stok_buku'] }}</h2>
+                            </div>
+                        <div class="col-6 col-md-12 col-xl-7">
+                            <div id="" class="mt-md-3 mt-xl-0"></div>
                         </div>
                         </div>
                     </div>
@@ -55,7 +95,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-3">Peminjaman</h6>
+                                <h6 class="card-title mb-3">Jumlah Peminjaman</h6>
                                 <div class="mb-2">
                                     <a href="{{ route('borrow.create') }}"><i class="icon-lg text-muted pb-3px" data-feather="shuffle"></i></a>
                                 </div>
@@ -65,7 +105,7 @@
                                     <h2 class="mb-2">{{ $data['jml_peminjam'] }}</h2>
                                 </div>
                                 <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
+                                    <div id="" class="mt-md-3 mt-xl-0"></div>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +115,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-3">Pengembalian</h6>
+                                <h6 class="card-title mb-3">Jumlah Pengembalian</h6>
                                 <div class="mb-2">
                                     <a href="{{ route('returns.create') }}"><i class="icon-lg text-muted pb-3px" data-feather="shuffle"></i></a>
                                 </div>
@@ -85,7 +125,7 @@
                                     <h2 class="mb-2">{{ $data['jml_return'] }}</h2>
                                 </div>
                                 <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
+                                    <div id="" class="mt-md-3 mt-xl-0"></div>
                                 </div>
                             </div>
                         </div>

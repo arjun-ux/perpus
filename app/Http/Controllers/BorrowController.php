@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Books;
 use App\Models\Borrowing;
 use App\Models\Member;
+use App\Models\User;
 use App\Service\BorrowService;
 use App\Service\MemberService;
 use Illuminate\Http\Request;
@@ -47,6 +48,12 @@ class BorrowController extends Controller
         $query = $request->get('q'); // Mendapatkan kata kunci pencarian
         $books = Books::where('title', 'LIKE', "%{$query}%")->paginate(5);
         return response()->json($books);
+    }
+    // data member select2
+    public function getMember(Request $request){
+        $query = $request->get('q'); // Mendapatkan kata kunci pencarian
+        $members = User::where('username', 'LIKE', "%{$query}%")->paginate(5);
+        return response()->json($members);
     }
 
     // cek username dan peminjaman sebelumnya
